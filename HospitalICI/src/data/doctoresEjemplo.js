@@ -1,0 +1,48 @@
+export const doctoresEjemplo = [
+  {
+    id: 1,
+    nombres: "Elizabeth",
+    apellidos: "Reed",
+    nombreCorto: "Dr. E. Reed",
+    especialidad: "Odontología General",
+    cedula: "CED-1011223",
+    consultorio: "Consultorio 3",
+    telefono: "449 888 77 66",
+    sexo: "F",
+  },
+  {
+    id: 2,
+    nombres: "Sarah",
+    apellidos: "Connor",
+    nombreCorto: "Dra. S. Connor",
+    especialidad: "Pediatría",
+    cedula: "CED-4044556",
+    consultorio: "Consultorio 1 - Piso 2",
+    telefono: "449 222 11 00",
+    sexo: "F",
+  },
+  {
+    id: 3,
+    nombres: "James",
+    apellidos: "Kim",
+    nombreCorto: "Dr. J. Kim",
+    especialidad: "Cardiología",
+    cedula: "CED-7077889",
+    consultorio: "Consultorio 5",
+    telefono: "449 555 33 22",
+    sexo: "M",
+  },
+  {
+    id: 4,
+    nombres: "Andrew",
+    apellidos: "Grant",
+    nombreCorto: "Dr. A. Grant",
+    especialidad: "Dermatología",
+    cedula: "CED-9099112",
+    consultorio: "Consultorio 4",
+    telefono: "449 111 99 88",
+    sexo: "M",
+  },
+];
+
+export default doctoresEjemplo;

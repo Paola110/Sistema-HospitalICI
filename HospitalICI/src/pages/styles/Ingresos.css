@@ -1,0 +1,112 @@
+.ingresos-container {
+  padding: 1rem 3rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  min-height: 70vh;
+}
+
+/* TITULOS */
+.header-ingresos {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.back-button {
+  background: white;
+  border: 0px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.back-button img {
+  width: 18px;
+  height: 18px;
+}
+
+.back-button:hover {
+  background: #f0f0f0;
+  transform: scale(1.03);
+}
+
+.subtitle {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  color: #777;
+}
+
+.total {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.total span {
+  font-size: 1rem;
+  color: #999;
+  margin-left: 5px;
+}
+
+/* CONTROLES */
+.controls {
+  margin-top: 0.3rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rango-buttons button {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 0.35rem 0.9rem;
+  margin-left: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s ease;
+}
+
+.rango-buttons .active {
+  background: #3b82f6;
+  color: white;
+  border-color: transparent;
+}
+
+/* GRAFICA */
+.chart-box {
+  margin-top: 1rem;
+  background: white;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+}
+
+/* TARJETAS */
+.info-grid {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.info-card {
+  flex: 1;
+  background: white;
+  padding: 0.5rem;
+  padding-left: 2.3rem;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.info-card p {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.info-card h3 {
+  margin-top: 0.5rem;
+  font-size: 1.3rem;
+}

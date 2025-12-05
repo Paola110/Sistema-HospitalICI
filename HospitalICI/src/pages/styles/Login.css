@@ -1,0 +1,142 @@
+.login-container {
+  display: flex;
+  margin: -8px;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+  height: 100%;
+}
+
+.login-box {
+  width: 350px;
+  margin: 42px;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 150px rgba(21, 73, 116, 0.6);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+}
+
+.input-icon-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-53%);
+  width: 20px;
+  height: 20px;
+}
+
+.input-with-icon {
+  width: 75%;
+  padding: 0.7rem 2.7rem 0.7rem 2.7rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14.5px;
+  background: #f3f8f9;
+}
+
+.input-with-icon::placeholder {
+  color: #a1aab3;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  opacity: 1;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.6rem;
+  background: #1d62a6;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background: #154974;
+}
+
+.forgot-password {
+  display: block;
+  margin-top: 1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 14px;
+  color: #1d62a6;
+  text-decoration: none;
+  justify-self: center;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  color: #555;
+}
+
+.footer-text {
+  margin-top: 1.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 13px;
+  color: #555;
+}
+
+.login-error {
+  background-color: #ffe5e5;
+  border: 2px solid #ff4d4d;
+  color: #b30000;
+  padding: 5px 1px;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

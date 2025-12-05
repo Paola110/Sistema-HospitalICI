@@ -1,0 +1,149 @@
+.detalle-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  filter: brightness(0);
+}
+
+.card-header-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tarjeta-info-cita,
+.tarjeta-motivo {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.header-with-icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -20px;
+}
+
+.tarjeta-info-cita h2,
+.tarjeta-motivo h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* --- TARJETA INFO CITA ESPECÍFICO --- */
+
+.info-blocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.info-block {
+  border-radius: 8px;
+  padding: 15px 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-block .label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.info-block .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.info-block-fecha {
+  background-color: #e6f0ff;
+  color: #007bff;
+}
+
+.info-block-hora {
+  background-color: #eaf8e6;
+  color: #28a745;
+}
+
+.info-block-duracion {
+  background-color: #f7e6ff;
+  color: #8c00b3;
+}
+
+/* Grid para los datos secundarios (Folio, Creada por, etc.) */
+.data-list-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 30px;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.data-item .label {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.data-item .value {
+  margin-left: 15px;
+  font-size: 1rem;
+  color: #343a40;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+/* --- TARJETA MOTIVO CONSULTA ESPECÍFICO --- */
+
+.tarjeta-motivo .descripcion {
+  line-height: 1.6;
+  color: #495057;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.tarjeta-motivo .sintomas-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 10px;
+}
+
+.tarjeta-motivo .sintomas-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sintoma-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tag-red {
+  background-color: #f8e6e8;
+  color: #721c24;
+}
+
+.tag-yellow {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.tag-orange {
+  background-color: #ffeccf;
+  color: #9f6000;
+}
