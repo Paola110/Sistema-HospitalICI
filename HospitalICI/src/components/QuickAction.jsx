@@ -8,8 +8,12 @@ export default function QuickAction({
   to,
   onClick,
   disabled,
+  pequeño,
 }) {
-  const className = `quick-action ${disabled ? "disabled" : ""}`;
+  const className = `quick-action 
+    ${disabled ? "-disabled" : ""} 
+    ${pequeño ? "qa-small" : ""}
+  `;
 
   if (onClick) {
     return (

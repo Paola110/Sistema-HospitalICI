@@ -1,6 +1,5 @@
 import "./styles/HomeMed.css";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
@@ -23,8 +22,16 @@ export default function HomeMed() {
 
   const [citaSeleccionada, setCitaSeleccionada] = useState(null);
 
+  useEffect(() => {
+    const guardada = localStorage.getItem("citaSeleccionadaMedico");
+    if (guardada) {
+      setCitaSeleccionada(JSON.parse(guardada));
+    }
+  }, []);
+
   const handleRowClick = (cita) => {
     setCitaSeleccionada(cita);
+    localStorage.setItem("citaSeleccionadaMedico", JSON.stringify(cita));
   };
 
   const iniciarConsulta = () => {

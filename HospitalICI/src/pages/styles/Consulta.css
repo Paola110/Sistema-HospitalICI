@@ -17,8 +17,16 @@
 .subtitulo {
   color: #6b7280;
   margin-left: 50px;
-  margin-top: 5px;
+  margin-top: -15px;
   font-size: 0.95rem;
+}
+
+.header-fecha-motivo {
+  margin-left: 160px;
+  background-color: white;
+  padding: 0px 15px 0px 15px;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Layout */
@@ -26,26 +34,40 @@
   margin-top: 2rem;
   display: grid;
   grid-template-columns: 330px 1fr;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 /* Panel izquierdo */
 .left-panel {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+/* Tarjeta persona */
+.tarjeta-persona {
+  height: 295px;
 }
 
 /* Acciones rápidas */
 .acciones-box-consulta {
+  flex: 1;
   background: white;
-  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  margin-top: -5px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .acciones-box-consulta h3 {
-  margin-bottom: 1rem;
+  grid-column: span 2;
+  margin-top: -5px;
+  margin-bottom: 0.8rem;
 }
 
 /* Panel derecho */
@@ -60,11 +82,15 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nota-medica-box h3 {
+  margin-top: -5px;
 }
 
 .nota-medica-box textarea {
-  width: 100%;
+  width: 97%;
   height: 120px;
   border-radius: 8px;
   padding: 0.7rem;
@@ -133,11 +159,15 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.servicios-box h3 {
+  margin-top: -5px;
 }
 
 .buscador {
-  width: 100%;
+  width: 97%;
   padding: 0.7rem;
   border-radius: 8px;
   border: 1px solid #dcdcdc;
@@ -155,8 +185,6 @@
   display: flex;
   justify-content: space-between;
   font-size: 1.1rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
   border-top: 1px solid #e5e7eb;
 }
 

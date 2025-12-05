@@ -10,8 +10,9 @@ import listaDeCitas from "../data/citasEjemplo.js";
 import pacientes from "../data/pacientesEjemplo.js";
 
 import backIcon from "../assets/back-arrow.svg";
+import documento from "../assets/checklist.svg";
+import expediente from "../assets/cedula.svg";
 import doctor from "../assets/doctor.svg";
-import historial from "../assets/clock.svg";
 
 import "./styles/Consulta.css";
 
@@ -26,6 +27,10 @@ export default function Consulta() {
   if (!cita) {
     return <p style={{ padding: "2rem" }}> Cita no encontrada</p>;
   }
+
+  const fecha_hora =
+    "Fecha y hora de la consulta: " + cita.fecha + " " + cita.hora;
+  const motivo = "Motivo de la consulta: " + cita.tipo;
 
   const partes = cita.paciente.trim().split(/\s+/);
 
@@ -70,8 +75,6 @@ export default function Consulta() {
 
   const total = serviciosAgregados.reduce((sum, s) => sum + s.precio, 0);
 
-  console.log(pacienteSeleccionado.nombres);
-
   return (
     <div className="consulta-page">
       {/* ENCABEZADO */}
@@ -81,6 +84,12 @@ export default function Consulta() {
         </button>
 
         <h2 className="title">Consulta</h2>
+        <div className="header-fecha-motivo">
+          <p>{fecha_hora}</p>
+        </div>
+        <div className="header-fecha-motivo">
+          <p>{motivo}</p>
+        </div>
       </div>
 
       <p className="subtitulo">Registro de consulta médica</p>
@@ -94,16 +103,21 @@ export default function Consulta() {
             <h3>Acciones rápidas</h3>
 
             <QuickAction
-              titulo="Iniciar consulta"
-              descripcion="Comenzar atención"
-              icono={doctor}
-              to={`/iniciar-consulta/${citaId}`}
+              pequeño
+              titulo="Crear receta"
+              icono={documento}
+              to="/notas"
+            />
+            <QuickAction
+              pequeño
+              titulo="Ver datos medicos"
+              icono={expediente}
+              to="/notas"
             />
 
             <QuickAction
-              titulo="Historial de citas"
-              descripcion="Buscar citas pasadas"
-              icono={historial}
+              titulo="Reservar quirofano"
+              icono={doctor}
               to="/historial"
             />
           </div>
