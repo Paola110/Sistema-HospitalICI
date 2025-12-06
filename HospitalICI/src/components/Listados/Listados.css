@@ -1,13 +1,12 @@
-.historial {
+.listado-container {
   padding: 1rem 3rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   min-height: 70vh;
 }
 
-.header {
+.header-listado {
   display: flex;
   align-items: center;
-  justify-content: left;
   gap: 0.8rem;
   margin-bottom: -15px;
 }
@@ -45,8 +44,8 @@
 .filter-bar {
   background-color: #fff;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 0px 10px 20px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   margin-bottom: 25px;
 }
 
@@ -106,11 +105,37 @@
   color: white;
 }
 
-.historial .appt-table {
-  border-radius: 12px;
-  padding: 1px;
-  font-size: 1rem;
-  color: rgb(107, 114, 128);
-  overflow: scroll;
-  height: 430px;
+.tabla-scroll {
+  margin-top: 20px;
+  max-height: 450px;
+  overflow-y: auto;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.table,
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  background: #f0f0f0;
+  padding: 14px;
+  font-size: 0.9rem;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ececec;
+}
+
+tr {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+tr:hover {
+  background: #f7f7f7;
 }

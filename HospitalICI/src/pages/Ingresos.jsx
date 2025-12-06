@@ -42,7 +42,7 @@ export default function Ingresos() {
     <div className="ingresos-container">
       {/* TÍTULO */}
       <div className="header-ingresos">
-        <button className="back-button" onClick={() => navigate("/homerecep")}>
+        <button className="back-button" onClick={() => navigate(-1)}>
           <img src={backIcon} alt="volver" />
         </button>
 

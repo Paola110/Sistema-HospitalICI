@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useUser } from "../context/UserContext";
-import HeaderRecep from "../components/Header";
+import HeaderMed from "../components/Header";
 import MetricCard from "../components/MetricCard";
 import AppointmentsTable from "../components/AppointmentsTable";
 import QuickAction from "../components/QuickAction";
@@ -42,7 +42,7 @@ export default function HomeMed() {
 
   return (
     <div className="med-container">
-      <HeaderRecep nombre={nombre} puesto={puesto} />
+      <HeaderMed nombre={nombre} puesto={puesto} />
 
       <div className="main-content-area">
         {/* TABLA */}

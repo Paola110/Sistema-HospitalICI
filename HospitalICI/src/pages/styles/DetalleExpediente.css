@@ -121,9 +121,12 @@
   background: white;
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
+.paciente-full-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 .paciente-full-card .avatar-row {
   background-color: white;
   display: flex;
@@ -311,20 +314,22 @@
 }
 
 /* historial */
-.historial-card {
+.detalle-page .historial-card {
+  height: 250px;
   padding: 0;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.historial-header {
+.detalle-page .historial-header {
+  margin-top: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0px 30px 0px 30px;
 }
 
-.historial-table table {
+.detalle-page .historial-table table {
+  max-height: 50px;
   width: 100%;
   margin-top: -20px;
   padding: 10px;
@@ -348,6 +353,7 @@
 
 .btn-link {
   background-color: rgb(164, 236, 193);
+  color: black !important;
   border-radius: 15px;
   padding: 5px 15px 5px 15px;
   border: none;

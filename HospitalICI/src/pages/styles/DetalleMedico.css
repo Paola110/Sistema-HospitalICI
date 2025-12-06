@@ -1,0 +1,425 @@
+.detalle-medico-page {
+  padding: 1rem 3rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.header-detalle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.back-button {
+  background: white;
+  border: 0px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.back-button img {
+  width: 18px;
+  height: 18px;
+}
+
+.title-det {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.subtitulo-de {
+  color: rgb(107, 114, 128);
+  margin-left: 50px;
+  margin-top: -15px;
+  font-size: 0.95rem;
+}
+
+/* BOTONES DE ACCIÓN */
+
+.btn-edit {
+  font-size: 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary.small {
+  background: #d1d5db; /* Gris claro para cancelar */
+  color: #1f2937;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary.small {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* LAYOUT */
+.content-grid {
+  display: flex;
+  gap: 25px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+/* TARJETA BASE */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 25px; /* Ajuste de padding para que se parezca más a la imagen */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra más sutil */
+  border: 1px solid #e5e7eb;
+}
+
+.card-header-icon {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.card-header-icon h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+.icon-cap,
+.icon-stats {
+  font-size: 1.5rem;
+  color: #6366f1;
+}
+
+/* TarjetaDoctorCompleta */
+.doctor-full-card .avatar-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.avatar-large {
+  width: 90px;
+  height: 90px;
+  background: #e0e7ff;
+  color: #2563eb; /* Azul más fuerte */
+  font-size: 2rem;
+  font-weight: 600;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nombre-block {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.nombre-block .doctor-nombre {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.nombre-block .cedula {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 15px;
+  font-size: 0.9rem;
+}
+
+.info-grid label {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.info-grid div {
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.info-grid input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 20px 0;
+}
+
+/* Servicios que Ofrece */
+.servicios-ofrece h4 {
+  font-size: 1rem;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.servicio-tag {
+  background: #e0f2fe; /* Azul muy claro */
+  color: #0c4a6e; /* Azul oscuro */
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.servicio-input {
+  flex-grow: 1;
+}
+
+/* Información de Contacto */
+.contacto-info h4 {
+  font-size: 1rem;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+.contacto-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #1f2937;
+}
+
+.contacto-row input {
+  flex-grow: 1;
+}
+
+.icon-tel,
+.icon-mail {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0);
+}
+
+/* TarjetaFormacion */
+
+.formacion-section h4,
+.certificaciones-section h4 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 600;
+  margin: 15px 0 5px 0;
+}
+.formacion-section h4:first-child {
+  margin-top: 0;
+}
+
+.formacion-item {
+  margin-bottom: 5px;
+}
+
+.item-detail {
+  font-size: 0.9rem;
+  color: #1f2937;
+  margin: 0;
+  padding-left: 5px;
+}
+
+.formacion-input,
+.cert-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.cert-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cert-tag {
+  background: #f3f4f6;
+  color: #1f2937;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* TarjetaEstadisticas */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.stat-item {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* HistorialCitasDoctor (Similar al HistorialCitasPaciente) */
+
+.detalle-medico-page .historial-card {
+  padding: 25px 10px 10px 10px;
+  height: 270px;
+}
+
+.detalle-medico-page .historial-header h3 {
+  margin-top: 0px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgb(31, 41, 55);
+}
+.historial-header {
+  margin-top: -20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px 10px 25px;
+}
+
+.historial-actions {
+  display: flex;
+}
+
+.btn-link {
+  border-radius: 15px;
+  padding: 5px 15px 5px 15px;
+  border: none;
+  cursor: pointer;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.detalle-medico-page .historial-table {
+  margin-top: -10px;
+  max-height: 212px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.detalle-medico-page .historial-table table {
+  max-height: 400px;
+  width: 100%;
+  margin-top: -20px;
+  padding: 10px;
+  overflow: scroll;
+  border-collapse: separate;
+  border-spacing: 0px;
+}
+
+.historial-table th,
+.historial-table td {
+  padding: 20px 0px 10px 10px;
+  font-size: 0.9rem;
+}
+
+.historial-table thead th {
+  background: #f9fafb;
+  position: relative;
+  z-index: 1;
+}
+
+.historial-table td {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.badge-finalizada {
+  background: #d4edda;
+  color: #155724;
+}
+.badge-programada {
+  background: #cce5ff;
+  color: #004085;
+}
+/* Añadir el resto de badges si se necesitan: cancelada, etc. */
+.badge-noasistio {
+  background: #f8d7da;
+  color: #721c24;
+}
+.badge-checkin {
+  background: #fff3cd;
+  color: #856404;
+}

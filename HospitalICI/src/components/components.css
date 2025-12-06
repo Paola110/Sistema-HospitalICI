@@ -44,6 +44,9 @@
 .metric-card.blue {
   background: #235df7;
 }
+.metric-card.purple {
+  background: #9741f1;
+}
 
 .metric-header {
   display: flex;

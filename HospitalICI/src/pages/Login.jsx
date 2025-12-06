@@ -46,7 +46,7 @@ export default function Login() {
       setRol("administrador");
       setNombre("Andrea Torres");
       setPuesto("Administradora");
-      navigate("/homeadm");
+      navigate("/homeadmin");
       return;
     }
 

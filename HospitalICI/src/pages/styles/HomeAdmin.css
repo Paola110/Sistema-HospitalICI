@@ -1,0 +1,143 @@
+.Titulo-tabla-admin {
+  padding: 24px;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 122.8vh;
+  margin-right: -15px;
+}
+
+.admin-container .tabla-scroll {
+  height: 280px;
+}
+
+.Titulo-tabla-admin h3 {
+  margin-top: -3px;
+}
+
+.admin-container {
+  padding: 1rem 3rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  min-height: 70vh;
+}
+
+.top-grid {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.main-grid {
+  display: flex;
+  gap: 2rem;
+}
+
+.metric-card img {
+  filter: brightness(0) invert(1);
+  width: 32px;
+  height: 32px;
+}
+
+.registros-box:hover {
+  transform: scale(1.02);
+  opacity: 0.95;
+}
+
+.registros-box {
+  transition: 0.2s ease;
+  cursor: pointer;
+  flex: 1;
+  background: white;
+  padding: 1.5rem;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.registros-box h3 {
+  margin-top: -5px;
+  grid-column: span 2;
+}
+
+.tabla-registros {
+  border-radius: 12px;
+  padding: 1px;
+  font-size: 1rem;
+  color: rgb(107, 114, 128);
+  width: 410px;
+  border-collapse: collapse;
+  overflow-y: scroll;
+  max-height: 200px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tabla-registros {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.tabla-registros th,
+.tabla-registros td {
+  width: calc(360px / 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabla-registros tr {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.tabla-registros tr:hover {
+  background: #f5f5f5;
+}
+
+.tabla-registros tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.tabla-registros tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-registros-scroll {
+  max-height: 300px;
+  width: 410px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: white;
+  padding-left: 4px;
+}
+
+.tabla-registros-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tabla-registros-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.tabla-registros-scroll::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+.tabla-registros th {
+  text-align: left;
+  font-size: 0.9rem;
+  color: rgb(85, 85, 85);
+  background: rgb(241, 243, 245);
+  padding: 12px 12px;
+}
+
+.tabla-registros td {
+  padding: 10px 20px 10px 10px;
+  border-bottom: 1px solid rgb(238, 238, 238);
+}

@@ -1,0 +1,229 @@
+/* Página */
+.detalle-registro-page {
+  max-width: 1400px;
+  padding: 1rem 3rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Header */
+.header-detalle-registro {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.back-button {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 10px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.back-button img {
+  width: 18px;
+  height: 18px;
+}
+
+.title-det-reg {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.subtitulo-de-reg {
+  margin-left: 50px;
+  margin-top: -15px;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+/* Layout */
+.content-grid-reg {
+  display: flex;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.sidebar-reg {
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.main-content-reg {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Tarjetas */
+.card {
+  background: white;
+  padding: 20px 25px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Audit Card */
+.card-audit {
+  text-align: center;
+}
+
+.entity-info-grid {
+  display: grid;
+  grid-template-columns: 500px 0.2fr;
+  padding-left: 10px;
+  background-color: #f8f9fa;
+  border: solid #e9eaee 2px;
+  border-radius: 15px;
+}
+
+.entity-info-grid label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.entity-info-grid div {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  width: 800px;
+}
+
+.registro-id {
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.badge-accion {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-crear {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-actualizar {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-eliminar {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.info-block-reg {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.info-block-reg label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.info-block-reg div {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.puesto-reg {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.description-block {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.description-block p {
+  margin: 5px 0 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.card-header-icon-reg h3 {
+  margin-top: -5px;
+  font-size: 1.25rem;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+/* Tabla de cambios */
+.changes-table-wrapper {
+  overflow-y: scroll;
+  margin-top: 15px;
+  max-height: 160px;
+}
+
+.changes-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.changes-table th {
+  padding: 12px 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: left;
+  color: #6b7280;
+  background: #f9fafb;
+}
+
+.changes-table td {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.changes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.value-antes {
+  background-color: #fef0f0;
+  color: #ef4444;
+  font-weight: 600;
+  text-decoration: line-through;
+}
+
+.value-despues {
+  background-color: #e9fdf3;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.no-changes {
+  text-align: center;
+  color: #6b7280;
+}
