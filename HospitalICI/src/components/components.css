@@ -16,6 +16,7 @@
 .subtext {
   color: #888;
   font-size: 0.9rem;
+  margin-top: -5px;
 }
 
 /* METRIC CARDS */
@@ -173,7 +174,6 @@
 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
 }
 
 .acciones-box h3 {

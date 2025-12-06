@@ -7,6 +7,10 @@
   width: 120vh;
 }
 
+.med-container .header-date {
+  margin-left: 870px;
+}
+
 .Titulo-tabla-Med h3 {
   margin-top: -10px;
 }

@@ -61,10 +61,7 @@ export default function DetalleCita() {
     <>
       <div className="detalle-page">
         <div className="header-detalle">
-          <button
-            className="back-button"
-            onClick={() => navigate("/historial")}
-          >
+          <button className="back-button" onClick={() => navigate(-2)}>
             <img className="icono" src={BackIcon} />
           </button>
 

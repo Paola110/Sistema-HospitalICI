@@ -40,7 +40,9 @@ export default function RegistrarPaciente({ onClose, onSave }) {
         <div className="modal-content">
           {/* Tarjeta Paciente */}
           <div className="paciente-card">
-            <div className="avatar">{form.nombres ? form.nombres[0] : "?"}</div>
+            <div className="avatar">
+              {form.nombres ? form.nombres[0] + form.apellidos[0] : "?"}
+            </div>
             <div>
               <div className="paciente-label">Nuevo paciente</div>
               <div className="paciente-nombre">

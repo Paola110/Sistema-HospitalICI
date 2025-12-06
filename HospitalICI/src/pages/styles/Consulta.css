@@ -14,14 +14,15 @@
   font-weight: bold;
 }
 
-.subtitulo {
-  color: #6b7280;
+.subtitulo-consul {
+  color: rgb(107, 114, 128);
   margin-left: 50px;
   margin-top: -15px;
   font-size: 0.95rem;
 }
 
 .header-fecha-motivo {
+  margin-top: 25px;
   margin-left: 160px;
   background-color: white;
   padding: 0px 15px 0px 15px;

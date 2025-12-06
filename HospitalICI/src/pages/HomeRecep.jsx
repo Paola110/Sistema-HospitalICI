@@ -13,7 +13,7 @@ import calendar from "../assets/calendar.png";
 import add from "../assets/user-add.svg";
 import checkin from "../assets/checkin.svg";
 import pay from "../assets/pay.png";
-import historyIcon from "../assets/informes.png";
+import historyIcon from "../assets/clock.svg";
 
 export default function HomeRecep() {
   const { nombre, puesto } = useUser();

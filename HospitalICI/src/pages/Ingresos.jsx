@@ -102,18 +102,18 @@ export default function Ingresos() {
         </ResponsiveContainer>
       </div>
       {/* TARJETAS INFERIORES */}
-      <div className="info-grid">
-        <div className="info-card">
+      <div className="info-grid-ingresos">
+        <div className="info-card-ingresos">
           <p>PROMEDIO DIARIO</p>
           <h3>${promedio}</h3>
         </div>
 
-        <div className="info-card">
+        <div className="info-card-ingresos">
           <p>MAYOR INGRESO</p>
           <h3>${mayorIngreso}.00</h3>
         </div>
 
-        <div className="info-card">
+        <div className="info-card-ingresos">
           <p>TRANSACCIONES</p>
           <h3>{data.length}</h3>
         </div>

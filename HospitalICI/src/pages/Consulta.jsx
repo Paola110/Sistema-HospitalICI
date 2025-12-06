@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useUser } from "../context/UserContext";
 import { useState } from "react";
 
 import TarjetaPersona from "../components/TarjetaPersona";
@@ -8,6 +7,9 @@ import QuickAction from "../components/QuickAction";
 import serviciosEjemplo from "../data/serviciosEjemplo.js";
 import listaDeCitas from "../data/citasEjemplo.js";
 import pacientes from "../data/pacientesEjemplo.js";
+
+import CrearReceta from "../components/CrearReceta";
+import ReservarQuirofano from "../components/ReservarQuirofano";
 
 import backIcon from "../assets/back-arrow.svg";
 import documento from "../assets/checklist.svg";
@@ -18,8 +20,6 @@ import "./styles/Consulta.css";
 
 export default function Consulta() {
   const navigate = useNavigate();
-  const { nombre } = useUser();
-
   const { citaId } = useParams();
 
   const cita = listaDeCitas.find((c) => c.id.toString() === citaId);
@@ -28,12 +28,7 @@ export default function Consulta() {
     return <p style={{ padding: "2rem" }}> Cita no encontrada</p>;
   }
 
-  const fecha_hora =
-    "Fecha y hora de la consulta: " + cita.fecha + " " + cita.hora;
-  const motivo = "Motivo de la consulta: " + cita.tipo;
-
   const partes = cita.paciente.trim().split(/\s+/);
-
   const nombres = partes[0] || "";
   const apellidos = partes.slice(1).join(" ") || "";
 
@@ -65,7 +60,6 @@ export default function Consulta() {
     if (!serviciosAgregados.some((s) => s.id === serv.id)) {
       setServiciosAgregados([...serviciosAgregados, serv]);
     }
-
     setBusqueda("");
   };
 
@@ -74,6 +68,9 @@ export default function Consulta() {
   };
 
   const total = serviciosAgregados.reduce((sum, s) => sum + s.precio, 0);
+
+  const [mostrarReceta, setMostrarReceta] = useState(false);
+  const [mostrarQuir, setMostrarQuir] = useState(false);
 
   return (
     <div className="consulta-page">
@@ -84,15 +81,19 @@ export default function Consulta() {
         </button>
 
         <h2 className="title">Consulta</h2>
+
         <div className="header-fecha-motivo">
-          <p>{fecha_hora}</p>
+          <p>
+            Fecha y hora de la consulta: {cita.fecha} {cita.hora}
+          </p>
         </div>
+
         <div className="header-fecha-motivo">
-          <p>{motivo}</p>
+          <p>Motivo de la consulta: {cita.tipo}</p>
         </div>
       </div>
 
-      <p className="subtitulo">Registro de consulta médica</p>
+      <p className="subtitulo-consul">Registro de consulta médica</p>
 
       <div className="consulta-layout">
         {/* PANEL IZQUIERDO */}
@@ -106,30 +107,33 @@ export default function Consulta() {
               pequeño
               titulo="Crear receta"
               icono={documento}
-              to="/notas"
-            />
-            <QuickAction
-              pequeño
-              titulo="Ver datos medicos"
-              icono={expediente}
-              to="/notas"
+              onClick={() => setMostrarReceta(true)}
             />
 
             <QuickAction
-              titulo="Reservar quirofano"
+              pequeño
+              titulo="Ver datos médicos"
+              icono={expediente}
+              to={`/expediente/${pacienteReal?.id}`}
+            />
+
+            <QuickAction
+              titulo="Reservar quirófano"
               icono={doctor}
-              to="/historial"
+              onClick={() => setMostrarQuir(true)}
             />
           </div>
         </div>
 
         {/* PANEL DERECHO */}
         <div className="right-panel">
+          {/* Nota médica */}
           <div className="nota-medica-box">
             <h3>Nota médica</h3>
             <textarea placeholder="Escribir nota médica aquí..."></textarea>
           </div>
 
+          {/* Servicios */}
           <div className="servicios-box">
             <h3>Agregar servicios</h3>
 
@@ -156,13 +160,12 @@ export default function Consulta() {
               </div>
             )}
 
-            {/* Lista de servicios agregados */}
+            {/* Lista agregada */}
             <div className="servicios-lista">
               {serviciosAgregados.map((s) => (
                 <div key={s.id} className="servicio-item">
                   <p>{s.nombre}</p>
                   <span>${s.precio.toFixed(2)}</span>
-
                   <button
                     className="remove-btn"
                     onClick={() => eliminarServicio(s.id)}
@@ -181,6 +184,22 @@ export default function Consulta() {
 
           <button className="btn-finalizar">Finalizar consulta</button>
         </div>
+        {mostrarReceta && (
+          <CrearReceta
+            paciente={pacienteSeleccionado}
+            cita={cita}
+            onClose={() => setMostrarReceta(false)}
+          />
+        )}
+
+        {mostrarQuir && (
+          <ReservarQuirofano
+            medico={cita.doctor}
+            paciente={pacienteSeleccionado}
+            cita={cita}
+            onClose={() => setMostrarQuir(false)}
+          />
+        )}
       </div>
     </div>
   );

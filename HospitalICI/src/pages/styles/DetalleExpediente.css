@@ -1,0 +1,658 @@
+.detalle-page {
+  padding: 1rem 3rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.header-detalle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.back-button {
+  background: white;
+  border: 0px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.back-button img {
+  width: 18px;
+  height: 18px;
+}
+
+.back-button:hover {
+  background: #f0f0f0;
+  transform: scale(1.03);
+}
+
+.title-det {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.header-actions {
+  margin-left: auto;
+  border-radius: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.subtitulo-de {
+  color: rgb(107, 114, 128);
+  margin-left: 50px;
+  margin-top: -15px;
+  font-size: 0.95rem;
+}
+
+/* botones */
+.btn-edit {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary.small {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  background: #a22121;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary.small {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* layout */
+.content-grid {
+  display: flex;
+  gap: 25px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+/* sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 380px;
+  flex-shrink: 0;
+}
+
+/* main content */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+/* tarjeta base */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.paciente-full-card .avatar-row {
+  background-color: white;
+  display: flex;
+  gap: 12px;
+  flex-direction: row;
+  height: 11.5vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-large {
+  width: 60px;
+  height: 60px;
+  background: #e0e7ff;
+  color: #1e3a8a;
+  font-size: 1.4rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nombre-block .paciente-nombre {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.nombre-block .meta {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+.exp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #6b7280;
+}
+
+.info-grid {
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 15px;
+}
+
+.info-grid label {
+  font-weight: 600;
+  color: #606775;
+  font-size: 0.85rem;
+}
+
+.info-grid div {
+  color: #121723;
+  font-weight: 545;
+  font-size: 0.85rem;
+}
+
+.info-grid input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+/* contacto emergencia */
+.contacto-emergencia h4 {
+  margin: 15px 0 8px 0;
+}
+
+/* datos clinicos card */
+.datos-clinicos-card .datos-grid {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  height: 60px;
+  margin-bottom: 1px;
+}
+
+.DatosCont {
+  margin-top: 15px;
+  background-color: #fef0f0;
+  padding: 10px 0px 10px 20px;
+  border-radius: 30px;
+  border: solid #fedede 2px;
+}
+
+.metric-alt {
+  background-color: #edf5ff;
+}
+.metric-pes {
+  background-color: #eefdf2;
+}
+.metric-imc {
+  background-color: #f9f3ff;
+}
+.metric-alt .metric-label {
+  color: #2158e8;
+}
+.metric-pes .metric-label {
+  color: #169941;
+}
+.metric-imc .metric-label {
+  color: #882de7;
+}
+.metric-alt,
+.metric-pes,
+.metric-imc {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.metric-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* clinicos grid */
+.clinicos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.clinicos-grid label {
+  margin-top: 15px;
+}
+
+.muted {
+  font-size: 13px;
+  background: #f8fafc;
+  color: #475569;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+
+  max-height: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.muted::-webkit-scrollbar {
+  width: 6px;
+}
+
+.muted::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.muted::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.muted::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* historial */
+.historial-card {
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.historial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px 0px 30px;
+}
+
+.historial-table table {
+  width: 100%;
+  margin-top: -20px;
+  padding: 10px;
+  overflow: scroll;
+}
+
+.historial-table th {
+  text-align: left;
+  padding: 10px 16px;
+  color: #6b7280;
+  font-size: 0.85rem;
+  background: #fbfdff;
+}
+
+.historial-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f2f6;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.btn-link {
+  background-color: rgb(164, 236, 193);
+  border-radius: 15px;
+  padding: 5px 15px 5px 15px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-link:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* estados */
+.badge-programada {
+  background: #cce5ff;
+  color: #004085;
+}
+.badge-finalizada {
+  background: #d4edda;
+  color: #155724;
+}
+.badge-cancelada {
+  background: #f8d7da;
+  color: #721c24;
+}
+.badge-pagada {
+  background: #c5faef;
+  color: #116b63;
+}
+.badge-noasistio {
+  background: #fedede;
+  color: #b01a1a;
+}
+.badge-checkin {
+  background: #cbf9e1;
+  color: #086d4d;
+}
+
+/* Fuente global */
+.detalle-exp-container,
+.det-exp-card,
+.det-exp-section,
+input,
+textarea,
+select,
+label,
+button {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* CONTENEDOR GENERAL */
+.detalle-exp-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 25px;
+}
+
+/* TÍTULO */
+.det-exp-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 5px;
+}
+
+.det-exp-subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+/* TARJETAS (IGUAL ESTILO DE TU UI) */
+.det-exp-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 22px;
+}
+
+/* -- HEADER DEL PACIENTE -- */
+.det-exp-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.det-exp-avatar {
+  width: 75px;
+  height: 75px;
+  background: #e0e7ff;
+  color: #1e3a8a;
+  font-size: 1.7rem;
+  font-weight: 600;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.det-exp-info h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.det-exp-info .sub-data {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-top: 3px;
+}
+
+/* GRID DE DATOS PERSONALES */
+.det-exp-data-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.det-exp-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.det-exp-value {
+  font-size: 0.95rem;
+  color: #1e293b;
+  margin-top: 3px;
+}
+
+/* CONTACTO Y EMERGENCIA */
+.section-title {
+  font-size: 1rem;
+  margin: 20px 0 10px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* DATOS CLÍNICOS */
+.det-exp-clin-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.det-exp-small-card {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 15px 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.det-exp-small-card .label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.det-exp-small-card .value {
+  margin-top: 5px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+/* FORM CAMPOS EDITABLES */
+
+input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgb(229, 231, 235);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.det-exp-input,
+.det-exp-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.det-exp-input:focus,
+.det-exp-textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.det-exp-textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* HISTORIAL DE CITAS */
+.table-wrapper {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.det-exp-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.det-exp-table thead {
+  background: #f1f5f9;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.det-exp-table th,
+.det-exp-table td {
+  padding: 12px 16px;
+  font-size: 0.9rem;
+}
+
+.det-exp-table tbody tr {
+  border-top: 1px solid #e2e8f0;
+}
+
+.det-exp-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ESTADOS DE CITAS */
+.estado {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.estado-pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.estado-completado {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.estado-cancelado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* BOTÓN EDITAR */
+.btn-editar {
+  background: #3b82f6;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-editar:hover {
+  background: #2563eb;
+}
+
+/* BOTONES DE GUARDAR/CANCELAR */
+.edit-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save {
+  background: #10b981;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+.btn-cancel {
+  background: #e11d48;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+.btn-save:hover {
+  background: #059669;
+}
+.btn-cancel:hover {
+  background: #be123c;
+}

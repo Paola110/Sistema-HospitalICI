@@ -39,7 +39,7 @@ export default function CrearCita() {
         <h2 className="title">Crear Cita</h2>
       </div>
 
-      <p className="subtitulo">Agenda una nueva cita para el paciente</p>
+      <p className="subtitulo-cc">Agenda una nueva cita para el paciente</p>
       {/* BUSCADOR */}
       <BuscadorPaciente
         pacientes={pacientesEjemplo}

@@ -86,13 +86,13 @@
 }
 
 /* TARJETAS */
-.info-grid {
+.info-grid-ingresos {
   margin-top: 1.5rem;
   display: flex;
   gap: 1rem;
 }
 
-.info-card {
+.info-card-ingresos {
   flex: 1;
   background: white;
   padding: 0.5rem;
@@ -101,12 +101,12 @@
   border: 1px solid #eee;
 }
 
-.info-card p {
+.info-card-ingresos p {
   font-size: 0.8rem;
   color: #777;
 }
 
-.info-card h3 {
+.info-card-ingresos h3 {
   margin-top: 0.5rem;
   font-size: 1.3rem;
 }

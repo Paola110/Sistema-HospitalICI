@@ -1,3 +1,7 @@
+/* ======================= */
+/*        OVERLAY          */
+/* ======================= */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -20,8 +24,8 @@
   position: relative;
 }
 
-.modal-header {
-  background: #2563eb;
+.modal-header-blue,
+.modal-header-red {
   padding: 20px;
   color: white;
   position: sticky;
@@ -30,19 +34,29 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.modal-header .title {
+.modal-header-blue {
+  background: #2563eb;
+}
+
+.modal-header-red {
+  background: #d63031;
+}
+
+.modal-header-blue .title,
+.modal-header-red .title {
   margin: 0;
   font-size: 1.35rem;
   font-weight: bold;
 }
 
-.modal-header .subtitle {
+.modal-header-blue .subtitle,
+.modal-header-red .subtitle {
   opacity: 0.8;
   font-size: 0.9rem;
   color: white;
 }
 
-.close-btn {
+.modal-close {
   position: absolute;
   right: 15px;
   top: 15px;
@@ -58,12 +72,18 @@
   padding-top: 30px;
 }
 
-body.modal-open {
-  filter: blur(4px);
-  overflow: hidden;
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.paciente-card {
+.receta-card {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -75,7 +95,7 @@ body.modal-open {
   width: 510px;
 }
 
-.avatar {
+.receta-card .avatar {
   width: 48px;
   height: 48px;
   background: #e0e7ff;
@@ -97,14 +117,14 @@ body.modal-open {
   font-weight: bold;
 }
 
-.form-section label {
+.modal-body label {
   margin-top: 12px;
   display: block;
   color: #374151;
   font-weight: 500;
 }
 
-.modal-content input {
+.modal-body input {
   flex: 1 1 0%;
   padding: 12px 15px;
   border: 1px solid rgb(220, 220, 220);
@@ -114,12 +134,12 @@ body.modal-open {
   width: 500px;
 }
 
-.modal-content select {
+.modal-body select {
   width: 532px;
 }
 
-.modal-content select,
-.modal-content textarea {
+.modal-body select,
+.modal-body textarea {
   padding: 10px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
@@ -127,19 +147,51 @@ body.modal-open {
   font-size: 0.95rem;
 }
 
-.modal-content textarea {
+.modal-body textarea {
   width: 510px;
   min-height: 70px;
   resize: vertical;
 }
 
-.divider {
-  height: 1px;
-  background: #e5e7eb;
-  margin: 20px 0;
+.modal-body .med-item input {
+  flex: 1 1 0%;
+  padding: 12px 15px;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 10px;
+  font-size: 15px;
+  margin-top: 5px;
+  width: 100%;
 }
 
-.modal-footer {
+.med-item {
+  background: #f7f9fc;
+  border: 1px solid #e3e7ee;
+  padding: 15px 0px 15px 10px;
+  border-radius: 10px;
+  margin-bottom: 0.9rem;
+
+  display: grid;
+  grid-template-columns: 2.4fr 1fr 1.5fr 1.5fr 0.1fr;
+  gap: 2.5rem;
+}
+
+.btn-add {
+  background: #e9f1ff;
+  border: 1px dashed #6a9cff;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  color: #0a63e8;
+  font-weight: 600;
+}
+
+/* ======================= */
+/*       BOTONES           */
+/* ======================= */
+
+.receta-buttons,
+.qf-buttons {
   display: flex;
   justify-content: flex-end;
   padding: 15px 20px;
@@ -147,15 +199,7 @@ body.modal-open {
   background: #f9fafb;
 }
 
-.btn-cancelar {
-  padding: 10px 18px;
-  background: #e5e7eb;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn-guardar {
+.btn-primary {
   padding: 10px 18px;
   background: #2563eb;
   color: white;
@@ -163,4 +207,20 @@ body.modal-open {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #084ec0;
+}
+
+.btn-secondary {
+  padding: 10px 18px;
+  background: #e5e7eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #d2d2d2;
 }

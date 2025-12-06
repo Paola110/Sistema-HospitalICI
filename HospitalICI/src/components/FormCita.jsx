@@ -35,6 +35,7 @@ export default function FormCita({ onCrear }) {
         <div className="campo">
           <label>Fecha</label>
           <input
+            className="input-fc"
             type="date"
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
@@ -44,6 +45,7 @@ export default function FormCita({ onCrear }) {
         <div className="campo">
           <label>Hora</label>
           <input
+            className="input-fc"
             type="time"
             value={hora}
             onChange={(e) => setHora(e.target.value)}
@@ -53,6 +55,7 @@ export default function FormCita({ onCrear }) {
 
       <label>Motivo de consulta (opcional)</label>
       <textarea
+        className="textarea-fc"
         placeholder="Describe brevemente el motivo..."
         value={motivo}
         onChange={(e) => setMotivo(e.target.value)}

@@ -34,9 +34,11 @@
   transform: scale(1.03);
 }
 
-.subtitulo {
-  color: #6b7280;
+.subtitulo-cc {
+  color: rgb(107, 114, 128);
   margin-left: 50px;
+  margin-top: 15px;
+  font-size: 0.95rem;
 }
 
 .contenido {

@@ -21,7 +21,6 @@ label {
 }
 
 select,
-input,
 textarea {
   padding: 12px;
   margin-top: 6px;
@@ -34,12 +33,17 @@ select {
   width: 100%;
 }
 
-textarea {
-  width: 98%;
+.textarea-fc {
+  width: 98.4%;
 }
 
-input {
-  width: 96%;
+.input-fc {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid rgb(209, 213, 219);
+  font-size: 0.95rem;
+  width: 97%;
 }
 
 .fila {

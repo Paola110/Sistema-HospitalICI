@@ -11,6 +11,7 @@ import Historial from "./pages/Historial";
 import DetalleCita from "./pages/DetalleCita";
 
 import Consulta from "./pages/Consulta";
+import DetalleExpediente from "./pages/DetalleExpediente";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/detalle-cita/:citaId" element={<DetalleCita />} />
 
       <Route path="/consulta/:citaId" element={<Consulta />} />
+      <Route path="/expediente/:pacienteId" element={<DetalleExpediente />} />
     </Routes>
   );
 }

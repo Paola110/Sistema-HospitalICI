@@ -104,3 +104,12 @@
   background-color: rgb(184, 24, 24);
   color: white;
 }
+
+.historial .appt-table {
+  border-radius: 12px;
+  padding: 1px;
+  font-size: 1rem;
+  color: rgb(107, 114, 128);
+  overflow: scroll;
+  height: 430px;
+}
