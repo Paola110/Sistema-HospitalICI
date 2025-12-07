@@ -8,11 +8,12 @@
 }
 
 .recep-container .tabla-scroll {
-  height: 280px;
+  height: 300px;
 }
 
 .Titulo-tabla-recep h3 {
   margin-top: -3px;
+  margin-bottom: 0px;
 }
 
 .recep-container {

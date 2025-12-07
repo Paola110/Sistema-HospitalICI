@@ -1,10 +1,12 @@
 import "./styles/HomeRecep.css";
+import { useState } from "react";
 
 import { useUser } from "../context/UserContext";
 import HeaderRecep from "../components/Header";
 import MetricCard from "../components/MetricCard";
 import AppointmentsTable from "../components/AppointmentsTable";
 import QuickAction from "../components/QuickAction";
+import CobrarConsulta from "../components/CobrarConsulta";
 
 import listaDeCitas from "/src/data/citasEjemplo.js";
 
@@ -17,6 +19,24 @@ import historyIcon from "../assets/clock.svg";
 
 export default function HomeRecep() {
   const { nombre, puesto } = useUser();
+  const [citaSeleccionada, setCitaSeleccionada] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const [abrirModalPago, setAbrirModalPago] = useState(false);
+
+  const handleSeleccionCita = (cita) => {
+    setSelectedId(cita.id);
+    setCitaSeleccionada(cita);
+    setAbrirModalPago(false);
+  };
+
+  const handleProcesarPago = () => {
+    if (!citaSeleccionada) {
+      alert("Primero selecciona una cita de la tabla.");
+      return;
+    }
+    setAbrirModalPago(true);
+  };
 
   return (
     <div className="recep-container">
@@ -43,8 +63,12 @@ export default function HomeRecep() {
       {/* TABLA + ACCIONES */}
       <div className="main-grid">
         <div className="Titulo-tabla-recep">
-          <h3>Próximas citas</h3>
-          <AppointmentsTable data={listaDeCitas} />
+          <h3>Citas</h3>
+          <AppointmentsTable
+            data={listaDeCitas}
+            onRowClick={handleSeleccionCita}
+            selectedId={selectedId}
+          />
         </div>
 
         <div className="acciones-box">
@@ -68,7 +92,7 @@ export default function HomeRecep() {
             titulo="Procesar pago"
             descripcion="Cobrar consulta"
             icono={pay}
-            to="/pago"
+            onClick={handleProcesarPago}
           />
 
           <QuickAction
@@ -79,6 +103,12 @@ export default function HomeRecep() {
           />
         </div>
       </div>
+      {abrirModalPago && citaSeleccionada && (
+        <CobrarConsulta
+          cita={citaSeleccionada}
+          onClose={() => setAbrirModalPago(false)}
+        />
+      )}
     </div>
   );
 }
