@@ -11,17 +11,21 @@ export default function BuscadorPaciente({
   const [query, setQuery] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
 
-  // Filtrado en tiempo real
-  const resultados = pacientes.filter((p) =>
-    `${p.nombres} ${p.apellidos}`.toLowerCase().includes(query.toLowerCase())
-  );
+  // Filtrado en tiempo real (Nombre o Celular)
+  const resultados = pacientes.filter((p) => {
+    const nombreCompleto = `${p.nombres} ${p.apellidos}`.toLowerCase();
+    const telefono = p.telefono || "";
+    const busqueda = query.toLowerCase();
+
+    return nombreCompleto.includes(busqueda) || telefono.includes(busqueda);
+  });
 
   return (
     <div className="buscador-container">
       <div className="buscador-top">
         <input
           type="text"
-          placeholder="Buscar paciente..."
+          placeholder="Buscar paciente (nombre o celular)..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -38,7 +42,7 @@ export default function BuscadorPaciente({
               console.log("Paciente guardado:", data);
               setMostrarModal(false);
               // Recargar la página para ver al nuevo paciente en la lista
-              window.location.reload(); 
+              window.location.reload();
             }}
           />
         )}
@@ -59,7 +63,11 @@ export default function BuscadorPaciente({
                   setQuery(""); // Limpiar búsqueda al seleccionar
                 }}
               >
-                {p.nombres} {p.apellidos}
+                <div>
+                  <strong>{p.nombres} {p.apellidos}</strong>
+                  <br />
+                  <span style={{ fontSize: '0.85em', color: '#666' }}> {p.telefono}</span>
+                </div>
               </div>
             ))
           )}

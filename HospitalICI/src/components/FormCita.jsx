@@ -1,21 +1,21 @@
+
 import { useState } from "react";
 import "./styles/FormCita.css";
 
-// AHORA RECIBE LA LISTA DE MÉDICOS
-export default function FormCita({ onCrear, medicos = [] }) {
-  const [idMedico, setIdMedico] = useState(""); // Guardamos el ID, no el nombre
+// Eliminamos la lógica de selección de médico de aquí
+export default function FormCita({ onCrear }) {
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState("");
   const [motivo, setMotivo] = useState("");
 
   const enviar = () => {
-    // Validamos que haya seleccionado un médico real
-    if (!idMedico || !fecha || !hora)
-      return alert("Completa los campos obligatorios (Médico, Fecha, Hora)");
+    // Validamos solo los campos de la cita
+    if (!fecha || !hora || !motivo)
+      return alert("Completa los campos obligatorios (Fecha, Hora y Motivo)");
 
     // Enviamos los datos al padre (CrearCita.jsx)
+    // El padre se encargará de juntar esto con el médico y paciente seleccionados
     onCrear({
-      id_medico: idMedico, // Enviamos el ID para la base de datos
       fecha,
       hora,
       motivo,
@@ -26,26 +26,9 @@ export default function FormCita({ onCrear, medicos = [] }) {
     <div className="form-cita">
       <h3 className="titulo">Detalles de la cita</h3>
 
-      <label>Médico / Especialidad</label>
-      <select 
-        value={idMedico} 
-        onChange={(e) => setIdMedico(e.target.value)}
-        className="select-medico" // Asegura que se vea bien si tienes estilos para selects
-      >
-        <option value="">Seleccionar médico...</option>
-        
-        {/* Generamos las opciones con datos reales */}
-        {medicos.map((m) => (
-          <option key={m.id} value={m.id}>
-            {/* Mostramos "Dr. Juan Pérez - Cardiología" */}
-            {m.nombreCorto || `${m.nombres} ${m.apellidos}`} - {m.especialidad}
-          </option>
-        ))}
-      </select>
-
       <div className="fila">
         <div className="campo">
-          <label>Fecha</label>
+          <label>Fecha *</label>
           <input
             className="input-fc"
             type="date"
@@ -55,7 +38,7 @@ export default function FormCita({ onCrear, medicos = [] }) {
         </div>
 
         <div className="campo">
-          <label>Hora</label>
+          <label>Hora *</label>
           <input
             className="input-fc"
             type="time"
@@ -65,10 +48,10 @@ export default function FormCita({ onCrear, medicos = [] }) {
         </div>
       </div>
 
-      <label>Motivo de consulta (opcional)</label>
+      <label>Motivo de consulta *</label>
       <textarea
         className="textarea-fc"
-        placeholder="Describe brevemente el motivo..."
+        placeholder="Describe el motivo de la consulta..."
         value={motivo}
         onChange={(e) => setMotivo(e.target.value)}
       />
