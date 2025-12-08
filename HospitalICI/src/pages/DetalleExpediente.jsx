@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import pacientes from "../data/pacientesEjemplo.js";
-import listaDeCitas from "../data/citasEjemplo.js";
-
 import TarjetaPacienteCompleta from "../components/TarjetaPacienteCompleta";
 import TarjetaDatosClinicos from "../components/TarjetaDatosClinicos";
 import HistorialCitasPaciente from "../components/HistorialCitasPaciente";
@@ -16,41 +13,53 @@ export default function DetalleExpediente() {
   const navigate = useNavigate();
 
   const [paciente, setPaciente] = useState(null);
+  const [citasPaciente, setCitasPaciente] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    const id = pacienteId ? Number(pacienteId) : null;
+    const fetchDatos = async () => {
+      setLoading(true);
+      try {
+        if (!pacienteId) return;
 
-    let found = null;
-    if (id) {
-      found = pacientes.find((p) => Number(p.id) === id);
-    }
-    if (!found) {
-      found = pacientes[0];
-    }
+        const resPaciente = await fetch(`http://localhost:3000/pacientes/${pacienteId}`);
+        if (!resPaciente.ok) throw new Error("Paciente no encontrado");
+        
+        const dataPaciente = await resPaciente.json();
 
-    const enriched = {
-      ...found,
-      altura: found.altura ?? 165,
-      peso: found.peso ?? 65,
-      imc: 0,
-      alergias: found.alergias ?? "Sin registro",
-      enfermedadesCronicas: found.enfermedadesCronicas ?? "No refiere",
-      cirugiasPrevias: found.cirugiasPrevias ?? "No refiere",
-      antecedentesFamiliares: found.antecedentesFamiliares ?? [],
-      contactoEmergencia: found.contactoEmergencia ?? {
-        nombre: "No registrado",
-        telefono: "N/A",
-        relacion: "",
-      },
+        const enriched = {
+          ...dataPaciente,
+          altura: dataPaciente.altura ?? 170,
+          peso: dataPaciente.peso ?? 70,
+          imc: 0,
+          alergias: dataPaciente.alergias ?? "Sin registro",
+          enfermedadesCronicas: "No refiere",
+          cirugiasPrevias: "No refiere",
+          antecedentesFamiliares: [],
+          contactoEmergencia: dataPaciente.contactoEmergencia ? 
+            { nombre: dataPaciente.contactoEmergencia, telefono: "", relacion: "" } : 
+            { nombre: "No registrado", telefono: "N/A", relacion: "" },
+        };
+
+        enriched.imc = calcularIMC(enriched.altura, enriched.peso);
+        setPaciente(enriched);
+
+        const resCitas = await fetch("http://localhost:3000/citas");
+        if (resCitas.ok) {
+          const todasCitas = await resCitas.json();
+          const delPaciente = todasCitas.filter(c => Number(c.id_paciente) === Number(pacienteId));
+          setCitasPaciente(delPaciente);
+        }
+
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    enriched.imc = calcularIMC(enriched.altura, enriched.peso);
-
-    setPaciente(enriched);
-    setLoading(false);
+    fetchDatos();
   }, [pacienteId]);
 
   const calcularIMC = (alturaCm, pesoKg) => {
@@ -60,47 +69,64 @@ export default function DetalleExpediente() {
   };
 
   const onStartEdit = () => setEditing(true);
+  
   const onCancelEdit = () => {
-    const id = paciente?.id ?? null;
-    const original = pacientes.find((p) => Number(p.id) === id);
-    if (original) {
-      setPaciente({
-        ...original,
-        altura: original.altura ?? 165,
-        peso: original.peso ?? 65,
-        imc: calcularIMC(original.altura ?? 165, original.peso ?? 65),
-        alergias: original.alergias ?? "Sin registro",
-        enfermedadesCronicas: original.enfermedadesCronicas ?? "No refiere",
-        cirugiasPrevias: original.cirugiasPrevias ?? "No refiere",
-        antecedentesFamiliares: original.antecedentesFamiliares ?? [],
-        contactoEmergencia: original.contactoEmergencia ?? {
-          nombre: "No registrado",
-          telefono: "N/A",
-          relacion: "",
-        },
+    setEditing(false);
+    window.location.reload();
+  };
+
+  const onSave = async (updated) => {
+    try {
+      const recalculado = {
+        ...updated,
+        imc: calcularIMC(updated.altura, updated.peso),
+      };
+
+      const datosParaEnviar = {
+        nombres: updated.nombres,
+        apellidos: updated.apellidos,
+        fechaNacimiento: updated.fechaNacimiento, 
+        sexo: updated.sexo,
+        telefono: updated.telefono,
+        email: updated.email,
+        direccion: updated.direccion,
+        contactoEmergencia: updated.contactoEmergencia?.nombre,
+        telefonoEmergencia: updated.contactoEmergencia?.telefono
+      };
+
+      const response = await fetch(`http://localhost:3000/pacientes/${updated.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datosParaEnviar)
       });
+
+      if (response.ok) {
+        setPaciente(recalculado);
+        setEditing(false);
+        alert(" Expediente actualizado correctamente.");
+      } else {
+        const errorData = await response.json();
+        alert(" Error: " + (errorData.error || "No se pudo actualizar"));
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión");
     }
-    setEditing(false);
   };
 
-  const onSave = (updated) => {
-    const recalculado = {
-      ...updated,
-      imc: calcularIMC(updated.altura, updated.peso),
-    };
-    setPaciente(recalculado);
-    setEditing(false);
-  };
+  if (loading) {
+    return <div className="detalle-page loading">Cargando detalle de expediente...</div>;
+  }
 
-  if (loading || !paciente) {
+  if (!paciente) {
     return (
       <div className="detalle-page loading">
-        Cargando detalle de expediente...
+        <h3>Paciente no encontrado.</h3>
+        <button className="btn-secondary" onClick={() => navigate(-1)}>Volver</button>
       </div>
     );
   }
-
-  const pacienteNombreCompleto = `${paciente.nombres} ${paciente.apellidos}`;
 
   return (
     <div className="detalle-page">
@@ -113,28 +139,17 @@ export default function DetalleExpediente() {
 
         <div className="header-actions">
           {!editing ? (
-            <button className="btn-edit" onClick={onStartEdit}>
-              Editar
-            </button>
+            <button className="btn-edit" onClick={onStartEdit}>Editar</button>
           ) : (
             <>
-              <button className="btn-secondary small" onClick={onCancelEdit}>
-                Cancelar
-              </button>
-              <button
-                className="btn-primary small"
-                onClick={() => onSave(paciente)}
-              >
-                Guardar
-              </button>
+              <button className="btn-secondary small" onClick={onCancelEdit}>Cancelar</button>
+              <button className="btn-primary small" onClick={() => onSave(paciente)}>Guardar</button>
             </>
           )}
         </div>
       </div>
 
-      <p className="subtitulo-de">
-        Información personal y expediente clínico completo
-      </p>
+      <p className="subtitulo-de">Información personal y expediente clínico completo</p>
 
       <div className="content-grid">
         <div className="sidebar">
@@ -150,25 +165,17 @@ export default function DetalleExpediente() {
             paciente={paciente}
             editing={editing}
             setPaciente={setPaciente}
-            calcularIMC={(h, p) => calcularIMC(h, p)}
+            calcularIMC={calcularIMC}
           />
 
           <div className="card historial-card">
             <div className="historial-header">
               <h3>Historial de Citas</h3>
-              <div className="historial-actions">
-                <button
-                  className="btn-link"
-                  onClick={() => navigate("/historial")}
-                >
-                  Ver historial completo
-                </button>
-              </div>
             </div>
 
             <HistorialCitasPaciente
-              pacienteNombre={pacienteNombreCompleto}
-              citas={listaDeCitas}
+              pacienteNombre={`${paciente.nombres} ${paciente.apellidos}`}
+              citas={citasPaciente}
             />
           </div>
         </div>

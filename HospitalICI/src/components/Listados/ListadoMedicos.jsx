@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import doctoresEjemplo from "../../data/doctoresEjemplo";
 import "./Listados.css";
 
 import backIcon from "../../assets/back-arrow.svg";
@@ -8,11 +7,24 @@ import backIcon from "../../assets/back-arrow.svg";
 export default function ListadoMedicos() {
   const navigate = useNavigate();
 
+  const [medicosOriginal, setMedicosOriginal] = useState([]);
+  const [resultado, setResultado] = useState([]);
+
   const [filtro, setFiltro] = useState({
     nombre: "",
     especialidad: "Todos",
     email: "",
   });
+
+  useEffect(() => {
+    fetch("http://localhost:3000/medicos")
+      .then((res) => res.json())
+      .then((data) => {
+        setMedicosOriginal(data);
+        setResultado(data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   const handleLimpiarFiltros = () => {
     setFiltro({
@@ -24,13 +36,11 @@ export default function ListadoMedicos() {
 
   const especialidadesUnicas = [
     "Todos",
-    ...new Set(doctoresEjemplo.map((d) => d.especialidad)),
+    ...new Set(medicosOriginal.map((d) => d.especialidad)),
   ];
 
-  const [resultado, setResultado] = useState(doctoresEjemplo);
-
   useEffect(() => {
-    const res = doctoresEjemplo.filter((d) => {
+    const res = medicosOriginal.filter((d) => {
       const coincideNombre = `${d.nombres} ${d.apellidos} ${d.nombreCorto}`
         .toLowerCase()
         .includes(filtro.nombre.toLowerCase());
@@ -47,7 +57,7 @@ export default function ListadoMedicos() {
     });
 
     setResultado(res);
-  }, [filtro]);
+  }, [filtro, medicosOriginal]);
 
   const handleRowClick = (doctor) => {
     navigate(`/detalle-medico/${doctor.id}`);
@@ -123,14 +133,22 @@ export default function ListadoMedicos() {
           </thead>
 
           <tbody>
-            {resultado.map((d) => (
-              <tr key={d.id} onClick={() => handleRowClick(d)}>
-                <td>{d.nombreCorto}</td>
-                <td>{d.especialidad}</td>
-                <td>{d.correo}</td>
-                <td>{d.telefono}</td>
+            {resultado.length > 0 ? (
+              resultado.map((d) => (
+                <tr key={d.id} onClick={() => handleRowClick(d)}>
+                  <td>{d.nombreCorto}</td>
+                  <td>{d.especialidad}</td>
+                  <td>{d.correo}</td>
+                  <td>{d.telefono}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>
+                  No se encontraron médicos registrados.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
