@@ -20,7 +20,7 @@ export default function HomeRecep() {
 
   const [citasHoy, setCitasHoy] = useState([]);
   const [ingresosHoy, setIngresosHoy] = useState(0);
-  
+
   const [citaSeleccionada, setCitaSeleccionada] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [abrirModalPago, setAbrirModalPago] = useState(false);
@@ -29,23 +29,28 @@ export default function HomeRecep() {
     fetch("http://localhost:3000/citas")
       .then((res) => res.json())
       .then((data) => {
-        const hoyString = new Date().toDateString(); 
-        
+        const hoyString = new Date().toDateString();
+
         const citasDelDia = data
           .filter((c) => {
             const fechaCita = new Date(c.fecha_hora);
             return fechaCita.toDateString() === hoyString;
           })
-          .filter((c) => c.estado !== 'Terminada')
+          // Eliminamos el filtro de 'Terminada' para ver TODAS las del día
           .map((c) => {
             const fechaObj = new Date(c.fecha_hora);
             return {
               id: c.id,
-              paciente: `Paciente #${c.id_paciente}`, 
-              doctor: `Dr. #${c.id_medico}`,
-              tipo: c.motivo_consulta, 
+              // Usar nombres reales si vienen del backend
+              paciente: c.nombres_paciente
+                ? `${c.nombres_paciente} ${c.apellidos_paciente}`
+                : `Paciente #${c.id_paciente}`,
+              doctor: c.nombres_medico
+                ? `Dr. ${c.nombres_medico} ${c.apellidos_medico}`
+                : `Dr. #${c.id_medico}`,
+              tipo: c.motivo_consulta,
               fecha: fechaObj.toLocaleDateString(),
-              hora: fechaObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+              hora: fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               estado: c.estado,
               id_paciente: c.id_paciente,
               id_medico: c.id_medico
@@ -83,6 +88,13 @@ export default function HomeRecep() {
       alert("Primero selecciona una cita de la tabla.");
       return;
     }
+
+    // VALIDACIÓN: Solo cobrar si está Terminada
+    if (citaSeleccionada.estado !== 'Terminada') {
+      alert("Solo se pueden cobrar citas que han sido terminadas (atendidas por el médico).");
+      return;
+    }
+
     setAbrirModalPago(true);
   };
 
@@ -101,7 +113,7 @@ export default function HomeRecep() {
 
         <MetricCard
           titulo="Citas pendientes hoy"
-          valor={citasHoy.length} 
+          valor={citasHoy.length}
           icono={calendarIcon}
           color="blue"
         />
@@ -112,13 +124,13 @@ export default function HomeRecep() {
           <h3>Citas de Hoy</h3>
           {citasHoy.length > 0 ? (
             <AppointmentsTable
-                data={citasHoy}
-                onRowClick={handleSeleccionCita}
-                selectedId={selectedId}
+              data={citasHoy}
+              onRowClick={handleSeleccionCita}
+              selectedId={selectedId}
             />
           ) : (
-            <div style={{padding: '20px', textAlign: 'center', color: '#666', background: 'white', borderRadius: '8px'}}>
-                No hay citas pendientes para hoy.
+            <div style={{ padding: '20px', textAlign: 'center', color: '#666', background: 'white', borderRadius: '8px' }}>
+              No hay citas pendientes para hoy.
             </div>
           )}
         </div>
@@ -130,14 +142,14 @@ export default function HomeRecep() {
             titulo="Crear cita"
             descripcion="Agendar nueva consulta"
             icono={addIcon}
-            to="/crear-cita" 
+            to="/crear-cita"
           />
 
           <QuickAction
             titulo="Check-in"
             descripcion="Registrar llegada de paciente"
             icono={checkinIcon}
-            to="/checkin" 
+            to="/checkin"
           />
 
           <QuickAction
@@ -151,11 +163,11 @@ export default function HomeRecep() {
             titulo="Historial de citas"
             descripcion="Buscar registros pasados"
             icono={historyIcon}
-            to="/historial"
+            to="/historial-recep"
           />
         </div>
       </div>
-      
+
       {abrirModalPago && citaSeleccionada && (
         <CobrarConsulta
           cita={citaSeleccionada}

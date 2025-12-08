@@ -131,6 +131,14 @@ export default function HomeMed() {
 
   const iniciarConsulta = () => {
     if (citaSeleccionada) {
+      if (citaSeleccionada.estado === 'Terminada') {
+        alert("Esta cita ya fue finalizada.");
+        return;
+      }
+      if (citaSeleccionada.estado !== 'En curso') {
+        alert("Solo puedes iniciar consultas que estén 'En curso' (Check-in realizado).");
+        return;
+      }
       navigate(`/consulta/${citaSeleccionada.id}`);
     }
   };
@@ -179,7 +187,7 @@ export default function HomeMed() {
               titulo="Iniciar consulta"
               descripcion="Comenzar atención"
               icono={doctor}
-              disabled={!citaSeleccionada}
+              disabled={!citaSeleccionada || citaSeleccionada.estado !== 'En curso'}
               onClick={iniciarConsulta}
             />
 

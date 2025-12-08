@@ -9,6 +9,7 @@ import Ingresos from "./pages/Ingresos";
 import CrearCita from "./pages/CrearCita";
 import Checkin from "./pages/Check-in";
 import Historial from "./pages/Historial";
+import HistorialRecep from "./pages/HistorialRecep";
 import DetalleCita from "./pages/DetalleCita";
 
 import Consulta from "./pages/Consulta";
@@ -32,6 +33,7 @@ export default function App() {
       <Route path="/crear-cita" element={<CrearCita />} />
       <Route path="/checkin" element={<Checkin />} />
       <Route path="/historial" element={<Historial />} />
+      <Route path="/historial-recep" element={<HistorialRecep />} />
       <Route path="/detalle-cita/:citaId" element={<DetalleCita />} />
 
       <Route path="/consulta/:citaId" element={<Consulta />} />
