@@ -90,8 +90,10 @@ export default function HomeMed() {
             paciente: `${cita.nombres_paciente} ${cita.apellidos_paciente}`,
             doctor: nombre,
             tipo: cita.motivo_consulta,
-            estado: cita.estado.charAt(0).toUpperCase() + cita.estado.slice(1), // Capitalizar primera letra
-            estadoClase: claseEstado
+            estado: cita.estado.charAt(0).toUpperCase() + cita.estado.slice(1),
+            estadoClase: claseEstado,
+            id_paciente: cita.id_paciente,
+            fecha_hora_raw: cita.fecha_hora
           };
         });
 

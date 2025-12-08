@@ -1,13 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useUser } from "../context/UserContext";
 import "./styles/Modal.css";
-
-import React from "react";
 import "./styles/RegistrarPaciente.css";
 
-export default function CrearReceta({ paciente, onClose, onSave }) {
+export default function CrearReceta({ paciente, cita, onClose }) {
+  const { userId } = useUser(); // Obtener ID del médico autenticado
+
   const [medicamentos, setMedicamentos] = useState([
     { nombre: "", dosis: "", frecuencia: "", duracion: "" },
   ]);
+  const [instruccionesExtra, setInstruccionesExtra] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const agregarMedicamento = () => {
     setMedicamentos([
@@ -22,8 +27,58 @@ export default function CrearReceta({ paciente, onClose, onSave }) {
     setMedicamentos(copia);
   };
 
-  const handleSubmit = () => {
-    onSave(form);
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+
+    // 1. Formatear Medicamentos para la BD (String)
+    const medsString = medicamentos
+      .filter((m) => m.nombre.trim() !== "") // Ignorar vacíos
+      .map((m) => `${m.nombre} (${m.dosis})`)
+      .join("\n");
+
+    // 2. Formatear Indicaciones para la BD (String)
+    const indicacionesMeds = medicamentos
+      .filter((m) => m.nombre.trim() !== "")
+      .map((m) => `${m.nombre}: ${m.frecuencia} por ${m.duracion}`)
+      .join("\n");
+
+    // Unir indicaciones de medicamentos + instrucciones extra
+    const indicacionesFinal = `${indicacionesMeds}\n\nNota Adicional: ${instruccionesExtra}`.trim();
+
+    if (!medsString) {
+      setError("Agrega al menos un medicamento.");
+      setLoading(false);
+      return;
+    }
+
+    const payload = {
+      medicamentos: medsString,
+      indicaciones: indicacionesFinal,
+      id_paciente: paciente.id,  // Asegurarse de que paciente venga con ID real
+      id_medico: userId
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/recetas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al guardar la receta.");
+      }
+
+      alert("Receta guardada exitosamente");
+      onClose(); // Cerrar modal
+
+    } catch (err) {
+      console.error("Error al crear receta:", err);
+      setError("Fallo al conectar con el servidor.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,22 +96,18 @@ export default function CrearReceta({ paciente, onClose, onSave }) {
         <div className="modal-content">
           <div className="receta-card">
             <div className="avatar">
-              {paciente.nombres[0]}
-              {paciente.apellidos[0]}
+              {paciente.nombres?.[0] || "?"}
+              {paciente.apellidos?.[0] || "?"}
             </div>
             <div>
               <div className="paciente-label">Paciente</div>
               <div className="paciente-nombre">
-                {paciente.nombres || "Nombre(s)"} {paciente.apellidos || ""}
+                {paciente.nombres || "Nombre"} {paciente.apellidos || ""}
               </div>
             </div>
           </div>
 
           <div className="modal-body">
-            {/* DIAGNOSTICO */}
-            <label>Diagnóstico</label>
-            <input type="text" placeholder="Ingrese diagnóstico..." />
-
             {/* MEDICAMENTOS */}
             <label>Medicamentos</label>
 
@@ -70,13 +121,13 @@ export default function CrearReceta({ paciente, onClose, onSave }) {
                 />
                 <input
                   type="text"
-                  placeholder="Dosis"
+                  placeholder="Dosis (500mg)"
                   value={m.dosis}
                   onChange={(e) => actualizarCampo(i, "dosis", e.target.value)}
                 />
                 <input
                   type="text"
-                  placeholder="Frecuencia"
+                  placeholder="Frecuencia (8hrs)"
                   value={m.frecuencia}
                   onChange={(e) =>
                     actualizarCampo(i, "frecuencia", e.target.value)
@@ -84,7 +135,7 @@ export default function CrearReceta({ paciente, onClose, onSave }) {
                 />
                 <input
                   type="text"
-                  placeholder="Duración"
+                  placeholder="Duración (3 días)"
                   value={m.duracion}
                   onChange={(e) =>
                     actualizarCampo(i, "duracion", e.target.value)
@@ -99,7 +150,13 @@ export default function CrearReceta({ paciente, onClose, onSave }) {
 
             {/* INSTRUCCIONES */}
             <label>Instrucciones adicionales (opcional)</label>
-            <textarea placeholder="Instrucciones extra..."></textarea>
+            <textarea
+              placeholder="Instrucciones extra..."
+              value={instruccionesExtra}
+              onChange={(e) => setInstruccionesExtra(e.target.value)}
+            ></textarea>
+
+            {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
           </div>
         </div>
 
@@ -108,7 +165,9 @@ export default function CrearReceta({ paciente, onClose, onSave }) {
           <button className="btn-secondary" onClick={onClose}>
             Cancelar
           </button>
-          <button className="btn-primary">Imprimir Receta</button>
+          <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Guardando..." : "Guardar Receta"}
+          </button>
         </div>
       </div>
     </div>

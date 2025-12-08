@@ -1,12 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import TarjetaPersona from "../components/TarjetaPersona";
 import QuickAction from "../components/QuickAction";
 
 import serviciosEjemplo from "../data/serviciosEjemplo.js";
-import listaDeCitas from "../data/citasEjemplo.js";
-import pacientes from "../data/pacientesEjemplo.js";
 
 import CrearReceta from "../components/CrearReceta";
 import ReservarQuirofano from "../components/ReservarQuirofano";
@@ -14,7 +12,7 @@ import ReservarQuirofano from "../components/ReservarQuirofano";
 import backIcon from "../assets/back-arrow.svg";
 import documento from "../assets/checklist.svg";
 import expediente from "../assets/cedula.svg";
-import doctor from "../assets/doctor.svg";
+import doctorIcon from "../assets/doctor.svg";
 
 import "./styles/Consulta.css";
 
@@ -22,30 +20,52 @@ export default function Consulta() {
   const navigate = useNavigate();
   const { citaId } = useParams();
 
-  const cita = listaDeCitas.find((c) => c.id.toString() === citaId);
+  // 1. Recuperar la cita seleccionada del Contexto o LocalStorage
+  const [cita, setCita] = useState(null);
+  const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!cita) {
-    return <p style={{ padding: "2rem" }}> Cita no encontrada</p>;
-  }
+  useEffect(() => {
+    const loadData = async () => {
+      // Intentar leer de localStorage (seteado en HomeMed)
+      const stored = localStorage.getItem("citaSeleccionadaMedico");
+      let citaData = null;
 
-  const partes = cita.paciente.trim().split(/\s+/);
-  const nombres = partes[0] || "";
-  const apellidos = partes.slice(1).join(" ") || "";
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.id.toString() === citaId) {
+          citaData = parsed;
+        }
+      }
 
-  const pacienteReal = pacientes.find(
-    (p) =>
-      p.nombres.toLowerCase() === nombres.toLowerCase() &&
-      p.apellidos.toLowerCase() === apellidos.toLowerCase()
-  );
+      // Si no hay cita en localStorage, idealmente haríamos fetch a /citas/:id
+      // Por ahora, asumimos que entra desde HomeMed. 
+      if (!citaData) {
+        setLoading(false);
+        return;
+      }
 
-  const pacienteSeleccionado = {
-    nombres,
-    apellidos,
-    sexo: pacienteReal?.sexo || "M",
-    edad: pacienteReal?.edad || "N/A",
-    telefono: pacienteReal?.telefono || "N/A",
-    correo: pacienteReal?.correo || "N/A",
-  };
+      setCita(citaData);
+
+      // 2. Fetch detalles del paciente
+      if (citaData.id_paciente) {
+        try {
+          const resp = await fetch(`http://localhost:3000/pacientes/${citaData.id_paciente}`);
+          if (resp.ok) {
+            const dataPac = await resp.json();
+            // Mapear si es necesario, o usar directo si coincide
+            setPacienteSeleccionado(dataPac);
+          }
+        } catch (err) {
+          console.error("Error cargando paciente:", err);
+        }
+      }
+
+      setLoading(false);
+    };
+
+    loadData();
+  }, [citaId]);
 
   const [busqueda, setBusqueda] = useState("");
   const [serviciosAgregados, setServiciosAgregados] = useState([]);
@@ -71,6 +91,9 @@ export default function Consulta() {
 
   const [mostrarReceta, setMostrarReceta] = useState(false);
   const [mostrarQuir, setMostrarQuir] = useState(false);
+
+  if (loading) return <div className="consulta-page"><p>Cargando datos de consulta...</p></div>;
+  if (!cita) return <div className="consulta-page"><p>No se encontró la información de la cita.</p></div>;
 
   return (
     <div className="consulta-page">
@@ -98,7 +121,11 @@ export default function Consulta() {
       <div className="consulta-layout">
         {/* PANEL IZQUIERDO */}
         <div className="left-panel">
-          <TarjetaPersona paciente={pacienteSeleccionado} type="paciente" />
+          {pacienteSeleccionado ? (
+            <TarjetaPersona paciente={pacienteSeleccionado} type="paciente" />
+          ) : (
+            <p>Cargando datos del paciente...</p>
+          )}
 
           <div className="acciones-box-consulta">
             <h3>Acciones rápidas</h3>
@@ -114,12 +141,12 @@ export default function Consulta() {
               pequeño
               titulo="Ver datos médicos"
               icono={expediente}
-              to={`/expediente/${pacienteReal?.id}`}
+              to={`/expediente/${cita.id_paciente}`}
             />
 
             <QuickAction
               titulo="Reservar quirófano"
-              icono={doctor}
+              icono={doctorIcon}
               onClick={() => setMostrarQuir(true)}
             />
           </div>
