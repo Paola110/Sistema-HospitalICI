@@ -47,6 +47,9 @@ export default function HomeMed() {
 
         const data = await response.json();
 
+        const today = new Date();
+        const todayStr = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+
         // Mapear los datos que vienen de la BD a lo que espera el Frontend
         const citasMapeadas = data.map((cita) => {
           const fechaObj = new Date(cita.fecha_hora);
@@ -92,7 +95,10 @@ export default function HomeMed() {
           };
         });
 
-        setListaMedico(citasMapeadas);
+        // Filtrar solo las citas de hoy
+        const citasDeHoy = citasMapeadas.filter(c => c.fecha === todayStr);
+
+        setListaMedico(citasDeHoy);
 
       } catch (err) {
         console.error("Error cargando citas:", err);

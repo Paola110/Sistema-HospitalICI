@@ -21,8 +21,42 @@ export default function RegistrarPaciente({ onClose, onSave }) {
     });
   };
 
-  const handleSubmit = () => {
-    onSave(form);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async () => {
+    // Validaciones básicas
+    if (!form.nombres || !form.apellidos || !form.telefono) {
+      setError("Nombres, apellidos y teléfono son obligatorios");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:3000/pacientes/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || "Error al registrar paciente");
+      }
+
+      const data = await response.json();
+      // Llamar a onSave con los datos retornados por la API
+      onSave(data);
+    } catch (err) {
+      console.error("Error creating patient:", err);
+      setError(err.message || "Error de conexión");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -131,13 +165,15 @@ export default function RegistrarPaciente({ onClose, onSave }) {
           </div>
         </div>
 
+        {error && <div style={{ color: "red", padding: "10px 20px" }}>{error}</div>}
+
         {/* FOOTER */}
         <div className="modal-footer">
           <button className="btn-cancelar" onClick={onClose}>
             Cancelar
           </button>
-          <button className="btn-guardar" onClick={handleSubmit}>
-            Registrar paciente
+          <button className="btn-guardar" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Guardando..." : "Registrar paciente"}
           </button>
         </div>
       </div>
