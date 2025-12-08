@@ -11,51 +11,78 @@ export default function CheckinPage() {
   const navigate = useNavigate();
   
   const [busqueda, setBusqueda] = useState("");
-  const [todasLasCitas, setTodasLasCitas] = useState([]);
+  const [citasDelDia, setCitasDelDia] = useState([]);
 
+  // 1. Cargar Citas y filtrar
   useEffect(() => {
     fetch("http://localhost:3000/citas")
       .then(res => res.json())
       .then(data => {
-        const hoy = new Date();
-        
-        const citasDeHoy = data.filter(c => {
-            const fechaCita = new Date(c.fecha_hora);
-            return (
-                fechaCita.getDate() === hoy.getDate() &&
-                fechaCita.getMonth() === hoy.getMonth() &&
-                fechaCita.getFullYear() === hoy.getFullYear()
-            );
-        });
+        const hoyString = new Date().toDateString(); 
 
-        const adaptadas = citasDeHoy.map(c => {
+        const filtradas = data
+          // FILTRO 1: Solo citas de HOY
+          .filter(c => new Date(c.fecha_hora).toDateString() === hoyString)
+          // FILTRO 2: Ocultar las que ya terminaron o se cancelaron
+          .filter(c => c.estado !== 'Terminada' && c.estado !== 'Cancelada')
+          .map(c => {
             const fechaObj = new Date(c.fecha_hora);
+            
+            // Normalizar estado (Primera mayúscula) para evitar errores de botón
+            const estadoNormalizado = c.estado.charAt(0).toUpperCase() + c.estado.slice(1).toLowerCase();
+
             return {
                 id: c.id,
-                paciente: `Paciente #${c.id_paciente}`, // O nombre si tienes JOIN
-                doctor: `Dr. #${c.id_medico}`,
+                paciente: c.nombres_paciente 
+                  ? `${c.nombres_paciente} ${c.apellidos_paciente}` 
+                  : `Paciente #${c.id_paciente}`,
+                doctor: c.nombres_medico 
+                  ? `Dr. ${c.nombres_medico} ${c.apellidos_medico}` 
+                  : `Dr. #${c.id_medico}`,
+                
                 hora: fechaObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                ampm: fechaObj.getHours() >= 12 ? 'PM' : 'AM',
                 fecha: fechaObj.toLocaleDateString(),
                 tipo: c.motivo_consulta,
-                estado: c.estado,
+                
+                estado: estadoNormalizado, // "Agendada", "En curso"
+                
                 original: c 
             };
         });
-        setTodasLasCitas(adaptadas);
+        
+        setCitasDelDia(filtradas);
       })
       .catch(console.error);
   }, []);
 
-  const handleConfirmarCheckin = async (cita) => {
-      try {
-         const res = await fetch(`http://localhost:3000/citas`, {
-           method: 'PUT',
-           headers: {'Content-Type': 'application/json'},
-           body: JSON.stringify({ ...cita.original, estado: 'En curso' })
-         });
-         if(res.ok) { alert("✅ Check-in exitoso"); navigate("/homerecep"); }
-      } catch (e) { console.error(e); }
+  const handleConfirmarCheckin = async (citaVisual) => {
+    try {
+       const payload = {
+           id: citaVisual.id,
+           estado: 'En curso', 
+           fecha_hora: citaVisual.original.fecha_hora, 
+           motivo: citaVisual.original.motivo_consulta,
+           id_medico: citaVisual.original.id_medico, 
+           id_paciente: citaVisual.original.id_paciente
+       };
+
+       const res = await fetch(`http://localhost:3000/citas`, {
+         method: 'PUT',
+         headers: {'Content-Type': 'application/json'},
+         body: JSON.stringify(payload)
+       });
+       
+       if(res.ok) {
+           alert(`✅ Check-in exitoso. Paciente ${citaVisual.paciente} en sala.`);
+           navigate("/homerecep");
+       } else {
+           alert("❌ Error al realizar check-in");
+       }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión");
+    }
   };
 
   return (
@@ -64,21 +91,27 @@ export default function CheckinPage() {
         <button className="back-button" onClick={() => navigate("/homerecep")}>
           <img src={BackIcon} alt="volver" />
         </button>
-        <h2 className="title">Check-in (Hoy)</h2>
+        <h2 className="title">Check-in</h2>
       </div>
-      <p className="subtitulo">Registra la llegada del paciente a su cita de hoy</p>
+
+      <p className="subtitulo">Registra la llegada de pacientes HOY</p>
+
       <div className="contenido" style={{ display: 'block' }}>
         <div style={{ marginBottom: '20px' }}>
             <input 
                 type="text" 
-                placeholder="Buscar por ID de paciente..." 
+                placeholder="Escribe el nombre del paciente..." 
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
-                style={{ width: '100%', padding: '10px', fontSize: '16px' }}
+                style={{ 
+                    width: '100%', padding: '12px', fontSize: '16px', 
+                    borderRadius: '8px', border: '1px solid #ccc' 
+                }}
             />
         </div>
+
         <CitasDeHoy 
-            citas={todasLasCitas} 
+            citas={citasDelDia} 
             pacienteNombre={busqueda} 
             onConfirmarCheckin={handleConfirmarCheckin}
         />
