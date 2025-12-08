@@ -8,24 +8,111 @@ import MetricCard from "../components/MetricCard";
 import AppointmentsTable from "../components/AppointmentsTable";
 import QuickAction from "../components/QuickAction";
 
-import listaDeCitas from "../data/citasEjemplo.js";
-
 import calendar from "../assets/calendar.png";
 import doctor from "../assets/doctor.svg";
 import historial from "../assets/clock.svg";
 
 export default function HomeMed() {
-  const { nombre, puesto } = useUser();
+  const { nombre, puesto, userId } = useUser();
   const navigate = useNavigate();
 
-  const listaMedico = listaDeCitas.filter((cita) => cita.doctor === nombre);
-
+  const [listaMedico, setListaMedico] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [citaSeleccionada, setCitaSeleccionada] = useState(null);
+
+  useEffect(() => {
+    const fetchCitas = async () => {
+      // Si no tenemos ID de usuario, no podemos cargar sus citas
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch a la API: /citas/:id (donde id es el id del medico)
+        const response = await fetch(`http://localhost:3000/citas/${userId}`);
+
+        if (!response.ok) {
+          // Manejo especial si devuelve 404 (sin citas) o error real
+          if (response.status === 404) {
+            setListaMedico([]);
+            return;
+          }
+          throw new Error("Error al consultar las citas.");
+        }
+
+        const data = await response.json();
+
+        // Mapear los datos que vienen de la BD a lo que espera el Frontend
+        const citasMapeadas = data.map((cita) => {
+          const fechaObj = new Date(cita.fecha_hora);
+
+          // Formato fecha: DD/MM/YYYY
+          const dia = fechaObj.getDate().toString().padStart(2, '0');
+          const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
+          const anio = fechaObj.getFullYear();
+          const fechaStr = `${dia}/${mes}/${anio}`;
+
+          // Formato hora: HH:MM AM/PM
+          let horas = fechaObj.getHours();
+          const minutos = fechaObj.getMinutes().toString().padStart(2, '0');
+          const ampm = horas >= 12 ? 'PM' : 'AM';
+          horas = horas % 12;
+          horas = horas ? horas : 12;
+          const horaStr = `${horas.toString().padStart(2, '0')}:${minutos} ${ampm}`;
+
+          // Clase CSS segun estado ('agendada', 'en curso', 'terminada', 'cancelada')
+          let claseEstado = "programada";
+          const estadoLower = cita.estado ? cita.estado.toLowerCase() : "";
+
+          if (estadoLower === "cancelada") claseEstado = "cancelada";
+          else if (estadoLower === "terminada") claseEstado = "finalizada";
+          else if (estadoLower === "en curso") claseEstado = "consulta";
+          else if (estadoLower === "agendada") claseEstado = "programada";
+          else {
+            // Fallback para otros estados si llegaran a existir
+            if (estadoLower.includes("cancel")) claseEstado = "cancelada";
+            else if (estadoLower.includes("final")) claseEstado = "finalizada";
+            else if (estadoLower.includes("curso")) claseEstado = "consulta";
+          }
+
+          return {
+            id: cita.id,
+            fecha: fechaStr,
+            hora: horaStr,
+            paciente: `${cita.nombres_paciente} ${cita.apellidos_paciente}`,
+            doctor: nombre,
+            tipo: cita.motivo_consulta,
+            estado: cita.estado.charAt(0).toUpperCase() + cita.estado.slice(1), // Capitalizar primera letra
+            estadoClase: claseEstado
+          };
+        });
+
+        setListaMedico(citasMapeadas);
+
+      } catch (err) {
+        console.error("Error cargando citas:", err);
+        setError("Error de conexión con el servidor.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCitas();
+  }, [userId, nombre]);
 
   useEffect(() => {
     const guardada = localStorage.getItem("citaSeleccionadaMedico");
     if (guardada) {
-      setCitaSeleccionada(JSON.parse(guardada));
+      try {
+        setCitaSeleccionada(JSON.parse(guardada));
+      } catch (e) {
+        localStorage.removeItem("citaSeleccionadaMedico");
+      }
     }
   }, []);
 
@@ -40,6 +127,13 @@ export default function HomeMed() {
     }
   };
 
+  // Calcular citas de hoy
+  const citasHoyCount = listaMedico.filter((c) => {
+    const today = new Date();
+    // c.fecha viene como "DD/MM/YYYY"
+    return c.fecha === `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+  }).length;
+
   return (
     <div className="med-container">
       <HeaderMed nombre={nombre} puesto={puesto} />
@@ -49,18 +143,23 @@ export default function HomeMed() {
         <div className="Titulo-tabla-Med">
           <h3>Próximas citas</h3>
 
-          <AppointmentsTable
-            data={listaMedico}
-            onRowClick={handleRowClick}
-            selectedId={citaSeleccionada?.id}
-          />
+          {loading && <p>Cargando citas...</p>}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+
+          {!loading && !error && (
+            <AppointmentsTable
+              data={listaMedico}
+              onRowClick={handleRowClick}
+              selectedId={citaSeleccionada?.id}
+            />
+          )}
         </div>
 
         {/* MÉTRICAS + ACCIONES */}
         <div className="side-grid">
           <MetricCard
             titulo="Citas del día"
-            valor="29"
+            valor={loading ? "-" : citasHoyCount.toString()}
             icono={calendar}
             color="blue"
           />
