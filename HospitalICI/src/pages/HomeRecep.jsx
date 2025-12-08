@@ -17,6 +17,7 @@ import historyIcon from "../assets/clock.svg";
 
 export default function HomeRecep() {
   const { nombre, puesto } = useUser();
+
   const [citasHoy, setCitasHoy] = useState([]);
   const [ingresosHoy, setIngresosHoy] = useState(0);
   
@@ -24,38 +25,28 @@ export default function HomeRecep() {
   const [selectedId, setSelectedId] = useState(null);
   const [abrirModalPago, setAbrirModalPago] = useState(false);
 
-  // ==========================================
-  // CONEXIÓN AL BACKEND
-  // ==========================================
   useEffect(() => {
-    // 1. Obtener Citas y filtrar SOLO LAS DE HOY
     fetch("http://localhost:3000/citas")
       .then((res) => res.json())
       .then((data) => {
-        const hoyString = new Date().toDateString(); // Ej: "Sun Dec 07 2025"
+        const hoyString = new Date().toDateString(); 
         
         const citasDelDia = data
           .filter((c) => {
-            // Convertimos la fecha de la cita (UTC/ISO) a objeto Date
             const fechaCita = new Date(c.fecha_hora);
-            // Comparamos solo la parte de la fecha (ignorando hora)
             return fechaCita.toDateString() === hoyString;
           })
-          // Filtramos las terminadas para que no estorben (Opcional, si quieres verlas quita esta línea)
-          .filter((c) => c.estado !== 'Terminada') 
+          .filter((c) => c.estado !== 'Terminada')
           .map((c) => {
             const fechaObj = new Date(c.fecha_hora);
             return {
               id: c.id,
-              // Si tienes JOIN en backend usa c.nombre_paciente, si no, usa ID
               paciente: `Paciente #${c.id_paciente}`, 
               doctor: `Dr. #${c.id_medico}`,
-              // El backend manda 'motivo_consulta', el componente espera 'tipo'
               tipo: c.motivo_consulta, 
               fecha: fechaObj.toLocaleDateString(),
               hora: fechaObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
               estado: c.estado,
-              // Guardamos datos crudos por si se necesitan (ej. para cobrar)
               id_paciente: c.id_paciente,
               id_medico: c.id_medico
             };
@@ -65,15 +56,12 @@ export default function HomeRecep() {
       })
       .catch((err) => console.error("Error cargando citas:", err));
 
-    // 2. Obtener Ingresos de HOY
     fetch("http://localhost:3000/pagos/ingresos")
       .then((res) => res.json())
       .then((data) => {
-        // Truco para coincidir con el formato del backend "DD Mes" (ej: "08 Dic")
         const hoy = new Date();
         const dia = hoy.getDate().toString().padStart(2, '0');
         const mes = hoy.toLocaleString('es-MX', { month: 'short' });
-        // Capitalizar primera letra: 'dic' -> 'Dic'
         const mesCap = mes.charAt(0).toUpperCase() + mes.slice(1);
         const fechaBusqueda = `${dia} ${mesCap}`;
 
@@ -102,7 +90,6 @@ export default function HomeRecep() {
     <div className="recep-container">
       <HeaderRecep nombre={nombre} puesto={puesto} />
 
-      {/* MÉTRICAS REALES */}
       <div className="top-grid">
         <MetricCard
           titulo="Ingresos del día"
@@ -120,7 +107,6 @@ export default function HomeRecep() {
         />
       </div>
 
-      {/* TABLA + ACCIONES */}
       <div className="main-grid">
         <div className="Titulo-tabla-recep">
           <h3>Citas de Hoy</h3>
@@ -144,14 +130,14 @@ export default function HomeRecep() {
             titulo="Crear cita"
             descripcion="Agendar nueva consulta"
             icono={addIcon}
-            to="/crear-cita"
+            to="/crear-cita" 
           />
 
           <QuickAction
             titulo="Check-in"
             descripcion="Registrar llegada de paciente"
             icono={checkinIcon}
-            to="/checkin"
+            to="/checkin" 
           />
 
           <QuickAction

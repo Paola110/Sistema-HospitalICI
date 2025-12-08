@@ -16,41 +16,68 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { setRol, setNombre, setPuesto } = useUser();
+  const { loginUser } = useUser();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!correo || !password) {
       setError("Por favor complete todos los campos.");
       return;
     }
 
-    const email = correo.toLowerCase();
+    // Limpiar errores previos
+    setError("");
 
-    if (email === "recepcionista@gmail.com") {
-      setRol("recepcionista");
-      setNombre("Rebeca Sánchez");
-      setPuesto("Recepcionista");
-      navigate("/homerecep");
-      return;
+    try {
+      // Petición a la API
+      const response = await fetch("http://localhost:3000/medicos/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: correo,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Manejar errores de la API (ej. credenciales inválidas)
+        throw new Error(data.message || "Error al iniciar sesión");
+      }
+
+      // Si el login es exitoso
+      if (data.user) {
+        // Guardar datos en el contexto
+        loginUser(data.user);
+
+        // Redirección basada en el rol recibido de la API
+        const userRol = data.user.rol; // 'doctor', 'admin', etc.
+
+        if (userRol === "doctor") {
+          navigate("/homemed");
+        } else if (userRol === "recepcionista") {
+          navigate("/homerecep");
+        } else if (userRol === "admin" || userRol === "administrador") {
+          navigate("/homeadmin");
+        } else {
+          // Fallback o rol desconocido
+          setError("Rol de usuario no reconocido por el sistema.");
+        }
+      } else {
+        setError("Respuesta del servidor incompleta.");
+      }
+
+    } catch (err) {
+      console.error("Login error:", err);
+      // Mantener lógica de fallback para demos si la API falla, O mostrar el error real
+      // Para este caso, mostraremos el error de la API o de conexión
+      setError(err.message || "Usuario o contraseña incorrectos.");
+
+      // NOTA: Si quieres mantener el login "hardcoded" como respaldo cuando la API está apagada,
+      // puedes ponerlo aquí dentro del catch. Por ahora lo quito para forzar el uso de la API.
     }
-
-    if (email === "medico@gmail.com") {
-      setRol("medico");
-      setNombre("Dr. A. Grant");
-      setPuesto("Dermatología");
-      navigate("/homemed");
-      return;
-    }
-
-    if (email === "admin@gmail.com") {
-      setRol("administrador");
-      setNombre("Andrea Torres");
-      setPuesto("Administradora");
-      navigate("/homeadmin");
-      return;
-    }
-
-    setError("Usuario o contraseña incorrectos.");
   };
 
   return (
