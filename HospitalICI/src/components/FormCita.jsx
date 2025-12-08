@@ -1,18 +1,21 @@
 import { useState } from "react";
 import "./styles/FormCita.css";
 
-export default function FormCita({ onCrear }) {
-  const [doctor, setDoctor] = useState("");
+// AHORA RECIBE LA LISTA DE MÉDICOS
+export default function FormCita({ onCrear, medicos = [] }) {
+  const [idMedico, setIdMedico] = useState(""); // Guardamos el ID, no el nombre
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState("");
   const [motivo, setMotivo] = useState("");
 
   const enviar = () => {
-    if (!doctor || !fecha || !hora)
-      return alert("Completa los campos obligatorios");
+    // Validamos que haya seleccionado un médico real
+    if (!idMedico || !fecha || !hora)
+      return alert("Completa los campos obligatorios (Médico, Fecha, Hora)");
 
+    // Enviamos los datos al padre (CrearCita.jsx)
     onCrear({
-      doctor,
+      id_medico: idMedico, // Enviamos el ID para la base de datos
       fecha,
       hora,
       motivo,
@@ -24,11 +27,20 @@ export default function FormCita({ onCrear }) {
       <h3 className="titulo">Detalles de la cita</h3>
 
       <label>Médico / Especialidad</label>
-      <select value={doctor} onChange={(e) => setDoctor(e.target.value)}>
+      <select 
+        value={idMedico} 
+        onChange={(e) => setIdMedico(e.target.value)}
+        className="select-medico" // Asegura que se vea bien si tienes estilos para selects
+      >
         <option value="">Seleccionar médico...</option>
-        <option>Dr. Miguel García - Cardiología</option>
-        <option>Dra. Sofía Ruiz - Ginecología</option>
-        <option>Dr. Juan Pérez - General</option>
+        
+        {/* Generamos las opciones con datos reales */}
+        {medicos.map((m) => (
+          <option key={m.id} value={m.id}>
+            {/* Mostramos "Dr. Juan Pérez - Cardiología" */}
+            {m.nombreCorto || `${m.nombres} ${m.apellidos}`} - {m.especialidad}
+          </option>
+        ))}
       </select>
 
       <div className="fila">
