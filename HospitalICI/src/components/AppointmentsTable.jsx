@@ -7,13 +7,28 @@ import "./components.css";
  * @param {Array<object>} data
  */
 export default function AppointmentsTable({ data, onRowClick, selectedId }) {
-  const citasOrdenadas = [...data].sort(compareCitasByDateTime);
+  const getEstadoClass = (estado) => {
+    if (!estado) return "default";
+    const est = estado.toLowerCase();
+    
+    if (est === 'agendada') return 'agendada';
+    if (est === 'terminada') return 'terminada';
+    if (est === 'en curso') return 'en-curso';
+    if (est === 'cancelada') return 'cancelada';
+    
+    return 'default';
+  };
+
+  const citasOrdenadas = [...data].sort((a, b) => {
+     return new Date(b.fecha_hora || b.fecha) - new Date(a.fecha_hora || a.fecha);
+  });
+
   const isClickable = !!onRowClick;
 
   return (
     <div className="appt-table">
       <div className="tabla-scroll">
-        <table>
+        <table className="custom-table">
           <thead>
             <tr>
               <th>FECHA</th>
@@ -26,35 +41,37 @@ export default function AppointmentsTable({ data, onRowClick, selectedId }) {
           </thead>
 
           <tbody>
-            {citasOrdenadas.map((cita) => (
-              <tr
-                key={cita.id}
-                className={`table-row
-    ${isClickable ? "cursor-pointer hover:bg-gray-100" : ""}
-    ${selectedId === cita.id ? "selected-row" : ""}
-  `}
-                onClick={() => isClickable && onRowClick(cita)}
-                style={{ cursor: isClickable ? "pointer" : "default" }}
-              >
-                <td>{cita.fecha}</td>
-                <td>{cita.hora}</td>
-                <td>{cita.paciente}</td>
-                <td>{cita.doctor}</td>
-                <td>{cita.tipo}</td>
-                <td>
-                  <span className={`estado ${cita.estadoClase}`}>
-                    {cita.estado}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {citasOrdenadas.map((cita) => {
+              const claseColor = getEstadoClass(cita.estado);
+
+              return (
+                <tr
+                  key={cita.id}
+                  className={`table-row 
+                    ${isClickable ? "clickable" : ""} 
+                    ${selectedId === cita.id ? "selected-row" : ""}
+                  `}
+                  onClick={() => isClickable && onRowClick(cita)}
+                >
+                  <td>{cita.fecha}</td>
+                  <td className="font-bold">{cita.hora}</td>
+                  <td>{cita.paciente}</td>
+                  <td>{cita.doctor}</td>
+                  <td>{cita.tipo}</td>
+                  <td>
+                    <span className={`estado-badge ${claseColor}`}>
+                      {cita.estado}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+
         {citasOrdenadas.length === 0 && (
-          <div
-            style={{ textAlign: "center", padding: "20px", color: "#6b7280" }}
-          >
-            No se encontraron citas que coincidan con los filtros.
+          <div className="empty-state">
+            No se encontraron citas para hoy.
           </div>
         )}
       </div>
