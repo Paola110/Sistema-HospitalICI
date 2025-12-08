@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import pacientes from "../../data/pacientesEjemplo";
+// BORRAMOS: import pacientes from "../../data/pacientesEjemplo"; 
 import "./Listados.css";
 
 import backIcon from "../../assets/back-arrow.svg";
@@ -8,24 +8,32 @@ import backIcon from "../../assets/back-arrow.svg";
 export default function ListadoPacientes() {
   const navigate = useNavigate();
 
+  const [pacientesOriginal, setPacientesOriginal] = useState([]);
+  
+  const [resultado, setResultado] = useState([]);
+
   const [filtro, setFiltro] = useState({
     nombre: "",
     telefono: "",
     id: "",
   });
 
-  const handleLimpiarFiltros = () => {
-    setFiltro({
-      nombre: "",
-      telefono: "",
-      id: "",
-    });
-  };
+  useEffect(() => {
+    fetch("http://localhost:3000/pacientes")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Datos recibidos del backend:", data); 
+        setPacientesOriginal(data); 
+        setResultado(data);         
+      })
+      .catch((error) => {
+        console.error("Error conectando al servidor:", error);
+      });
+  }, []); 
 
-  const [resultado, setResultado] = useState(pacientes);
 
   useEffect(() => {
-    const res = pacientes.filter((p) => {
+    const res = pacientesOriginal.filter((p) => {
       const coincideNombre = `${p.nombres} ${p.apellidos}`
         .toLowerCase()
         .includes(filtro.nombre.toLowerCase());
@@ -42,7 +50,14 @@ export default function ListadoPacientes() {
     });
 
     setResultado(res);
-  }, [filtro]);
+  }, [filtro, pacientesOriginal]);
+  const handleLimpiarFiltros = () => {
+    setFiltro({
+      nombre: "",
+      telefono: "",
+      id: "",
+    });
+  };
 
   const handleRowClick = (paciente) => {
     navigate(`/expediente/${paciente?.id}`);
@@ -114,16 +129,24 @@ export default function ListadoPacientes() {
           </thead>
 
           <tbody>
-            {resultado.map((p) => (
-              <tr key={p.id} onClick={() => handleRowClick(p)}>
-                <td>
-                  {p.nombres} {p.apellidos}
+            {resultado.length > 0 ? (
+              resultado.map((p) => (
+                <tr key={p.id} onClick={() => handleRowClick(p)}>
+                  <td>
+                    {p.nombres} {p.apellidos}
+                  </td>
+                  <td>{p.id}</td>
+                  <td>{p.direccion || "Sin dirección"}</td> 
+                  <td>{p.telefono}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>
+                  No se encontraron pacientes (o no hay conexión al servidor).
                 </td>
-                <td>{p.id}</td>
-                <td>{p.domicilio}</td>
-                <td>{p.telefono}</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

@@ -1,115 +1,26 @@
 import React from "react";
 import "../pages/styles/DetalleMedico.css";
 
-export default function HistorialCitasDoctor({ doctorNombre, citas }) {
-  const filtradas = citas
-    .filter(
-      (c) => (c.doctor || "").toLowerCase() === doctorNombre.toLowerCase()
-    )
-    .sort((a, b) => {
-      const parse = (d) => {
-        const [day, month, year] = d.split("/").map(Number);
-        return new Date(2025, month - 1, day).getTime();
-      };
-      return parse(b.fecha) - parse(a.fecha);
-    });
-
-  const citasMock = [
-    {
-      fecha: "28/11/2025",
-      paciente: "Luis Morena",
-      motivo: "Control Diabetes",
-      estado: "Asistió",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "15/11/2025",
-      paciente: "Ana Torres",
-      motivo: "Revisión Cardiovascular",
-      estado: "Pendiente",
-      estadoClase: "programada",
-    },
-    {
-      fecha: "03/11/2025",
-      paciente: "José Pérez",
-      motivo: "Consulta Rutinaria",
-      estado: "Consulta Rutinaria",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "28/11/2025",
-      paciente: "Luis Morena",
-      motivo: "Control Diabetes",
-      estado: "Asistió",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "15/11/2025",
-      paciente: "Ana Torres",
-      motivo: "Revisión Cardiovascular",
-      estado: "Pendiente",
-      estadoClase: "programada",
-    },
-    {
-      fecha: "03/11/2025",
-      paciente: "José Pérez",
-      motivo: "Consulta Rutinaria",
-      estado: "Consulta Rutinaria",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "28/11/2025",
-      paciente: "Luis Morena",
-      motivo: "Control Diabetes",
-      estado: "Asistió",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "15/11/2025",
-      paciente: "Ana Torres",
-      motivo: "Revisión Cardiovascular",
-      estado: "Pendiente",
-      estadoClase: "programada",
-    },
-    {
-      fecha: "03/11/2025",
-      paciente: "José Pérez",
-      motivo: "Consulta Rutinaria",
-      estado: "Consulta Rutinaria",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "28/11/2025",
-      paciente: "Luis Morena",
-      motivo: "Control Diabetes",
-      estado: "Asistió",
-      estadoClase: "finalizada",
-    },
-    {
-      fecha: "15/11/2025",
-      paciente: "Ana Torres",
-      motivo: "Revisión Cardiovascular",
-      estado: "Pendiente",
-      estadoClase: "programada",
-    },
-    {
-      fecha: "03/11/2025",
-      paciente: "José Pérez",
-      motivo: "Consulta Rutinaria",
-      estado: "Consulta Rutinaria",
-      estadoClase: "finalizada",
-    },
-  ];
-
-  const citasAMostrar = filtradas.length > 0 ? filtradas : citasMock;
-
-  if (citasAMostrar.length === 0) {
+export default function HistorialCitasDoctor({ citas }) {
+  if (!citas || citas.length === 0) {
     return (
-      <div style={{ padding: "16px", color: "#6b7280" }}>
-        No hay citas registradas para este doctor.
+      <div style={{ padding: "16px", color: "#6b7280", textAlign: "center" }}>
+        No hay citas registradas para este doctor en la Base de Datos.
       </div>
     );
   }
+
+  const citasOrdenadas = [...citas].sort((a, b) => {
+    return new Date(b.fecha_hora) - new Date(a.fecha_hora);
+  });
+
+  const getBadgeClass = (estado) => {
+    const est = (estado || "").toLowerCase();
+    if (est === "terminada" || est === "asistió") return "finalizada";
+    if (est === "cancelada") return "cancelada"; 
+    if (est === "en curso") return "en-curso";   
+    return "programada";
+  };
 
   return (
     <div className="historial-table">
@@ -124,15 +35,24 @@ export default function HistorialCitasDoctor({ doctorNombre, citas }) {
         </thead>
 
         <tbody>
-          {citasAMostrar.map((c, index) => (
-            <tr key={index}>
-              <td>{c.fecha}</td>
-              <td>{c.paciente}</td>
-              <td>{c.motivo}</td>
+          {citasOrdenadas.map((c) => (
+            <tr key={c.id || Math.random()}>
               <td>
-                <span
-                  className={`badge badge-${c.estadoClase || "finalizada"}`}
-                >
+                {new Date(c.fecha_hora).toLocaleDateString("es-MX")}{" "}
+                <small style={{ color: "#888" }}>
+                  {new Date(c.fecha_hora).toLocaleTimeString("es-MX", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </small>
+              </td>
+              
+              <td>Paciente #{c.id_paciente}</td>
+              
+              <td>{c.motivo_consulta}</td>
+              
+              <td>
+                <span className={`badge badge-${getBadgeClass(c.estado)}`}>
                   {c.estado}
                 </span>
               </td>

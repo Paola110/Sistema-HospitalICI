@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import doctoresEjemplo from "../data/doctoresEjemplo.js";
-import listaDeCitas from "../data/citasEjemplo.js";
-
 import TarjetaDoctorCompleta from "../components/TarjetaDoctorCompleta.jsx";
 import TarjetaFormacion from "../components/TarjetaFormacion.jsx";
 import TarjetaEstadisticas from "../components/TarjetaEstadisticas.jsx";
@@ -17,60 +14,112 @@ export default function DetalleMedico() {
   const navigate = useNavigate();
 
   const [doctor, setDoctor] = useState(null);
+  const [citasDoctor, setCitasDoctor] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    const id = doctorId ? Number(doctorId) : null;
+    const fetchDatos = async () => {
+      setLoading(true);
+      try {
+        if (!doctorId) return;
 
-    let found = null;
-    if (id) {
-      found = doctoresEjemplo.find((d) => Number(d.id) === id);
-    }
-    if (!found) {
-      found = doctoresEjemplo[0];
-    }
+        const resDoctor = await fetch(`http://localhost:3000/medicos/${doctorId}`);
+        
+        if (!resDoctor.ok) {
+          throw new Error("Médico no encontrado");
+        }
+        
+        const dataDoctor = await resDoctor.json();
 
-    const enriched = {
-      ...found,
-      anosExperiencia: found.anosExperiencia ?? 0,
-      horarioLaboral: found.horarioLaboral ?? "No definido",
-      serviciosOfrece: found.serviciosOfrece ?? [],
-      formacion: found.formacion ?? [],
-      certificaciones: found.certificaciones ?? [],
-      stats: found.stats ?? {
-        pacientesAtendidos: 0,
-        satisfaccion: 0,
-        ingresosGenerados: 0,
-        calificacionPromedio: 0.0,
-      },
+        const doctorSeguro = {
+          ...dataDoctor,
+          anosExperiencia: dataDoctor.anosExperiencia ?? 0,
+          horarioLaboral: dataDoctor.horarioLaboral ?? "No definido",
+          serviciosOfrece: dataDoctor.serviciosOfrece ?? [],
+          formacion: dataDoctor.formacion ?? [],
+          certificaciones: dataDoctor.certificaciones ?? [],
+          stats: dataDoctor.stats ?? {
+            pacientesAtendidos: 0,
+            satisfaccion: 0,
+            ingresosGenerados: 0,
+            calificacionPromedio: 0.0,
+          },
+        };
+
+        setDoctor(doctorSeguro);
+
+        const resCitas = await fetch("http://localhost:3000/citas");
+        if (resCitas.ok) {
+          const todasLasCitas = await resCitas.json();
+          const citasDeEsteDoctor = todasLasCitas.filter(
+            (c) => Number(c.id_medico) === Number(doctorId)
+          );
+          setCitasDoctor(citasDeEsteDoctor);
+        }
+
+      } catch (error) {
+        console.error("Error cargando detalles:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setDoctor(enriched);
-    setLoading(false);
+    fetchDatos();
   }, [doctorId]);
 
   const onStartEdit = () => setEditing(true);
+
   const onCancelEdit = () => {
-    const id = doctor?.id ?? null;
-    const original = doctoresEjemplo.find((d) => Number(d.id) === id);
-    if (original) {
-      setDoctor(original);
+    setEditing(false);
+    window.location.reload(); 
+  };
+
+  const onSave = async (updatedDoctor) => {
+    try {
+      const datosParaEnviar = {
+        nombres: updatedDoctor.nombres,
+        apellidos: updatedDoctor.apellidos,
+        email: updatedDoctor.correo,
+        cedula: updatedDoctor.cedula,
+        especialidad: updatedDoctor.especialidad,
+        horarioLaboral: updatedDoctor.horarioLaboral
+      };
+
+      const response = await fetch(`http://localhost:3000/medicos/${updatedDoctor.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosParaEnviar)
+      });
+
+      if (response.ok) {
+        setDoctor(updatedDoctor);
+        setEditing(false);
+        alert("Médico actualizado correctamente en la Base de Datos");
+      } else {
+        alert("Error al actualizar: Verifica los datos.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión con el servidor");
     }
-    setEditing(false);
   };
 
-  const onSave = (updated) => {
-    setDoctor(updated);
-    setEditing(false);
-    alert("Datos actualizados localmente (no guardados en backend real).");
-  };
-
-  if (loading || !doctor) {
+  if (loading) {
     return (
       <div className="detalle-medico-page loading">
         Cargando detalle del médico...
+      </div>
+    );
+  }
+
+  if (!doctor) {
+    return (
+      <div className="detalle-medico-page loading">
+        <h3>Médico no encontrado o error de conexión.</h3>
+        <button className="btn-secondary" onClick={() => navigate(-1)}>Volver</button>
       </div>
     );
   }
@@ -136,7 +185,7 @@ export default function DetalleMedico() {
 
             <HistorialCitasDoctor
               doctorNombre={doctorNombreCompleto}
-              citas={listaDeCitas}
+              citas={citasDoctor} 
             />
           </div>
         </div>

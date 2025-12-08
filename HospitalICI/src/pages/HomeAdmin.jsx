@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"; 
 import "./styles/HomeAdmin.css";
 import { useNavigate } from "react-router-dom";
 
@@ -5,9 +6,9 @@ import { useUser } from "../context/UserContext";
 import HeaderAdmin from "../components/Header";
 import MetricCard from "../components/MetricCard";
 
-import ingresos from "../assets/ingresos.svg";
-import doctor from "../assets/doctor.svg";
-import user from "../assets/user.png";
+import ingresosIcon from "../assets/ingresos.svg";
+import doctorIcon from "../assets/doctor.svg"; 
+import userIcon from "../assets/user.png";
 
 import registrosEjemplo from "../data/registrosEjemplo";
 
@@ -20,56 +21,80 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { ingresos7dias } from "../data/ingresosEjemplo";
 
 export default function HomeAdmin() {
   const { nombre, puesto } = useUser();
   const navigate = useNavigate();
 
-  const data = ingresos7dias;
-  const total = data.reduce((sum, item) => sum + item.monto, 0);
+  const [dataIngresos, setDataIngresos] = useState([]);
+  const [totalDinero, setTotalDinero] = useState(0);
+  const [numMedicos, setNumMedicos] = useState(0);
+  const [numPacientes, setNumPacientes] = useState(0);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/pagos/ingresos")
+      .then((res) => res.json())
+      .then((data) => {
+        setDataIngresos(data);
+        const suma = data.reduce((acc, item) => acc + item.monto, 0);
+        setTotalDinero(suma);
+      })
+      .catch((err) => console.error("Error cargando ingresos:", err));
+
+    fetch("http://localhost:3000/medicos")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setNumMedicos(data.length);
+      })
+      .catch((err) => console.error("Error cargando médicos:", err));
+
+    fetch("http://localhost:3000/pacientes")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setNumPacientes(data.length);
+      })
+      .catch((err) => console.error("Error cargando pacientes:", err));
+  }, []);
 
   return (
     <div className="admin-container">
       <HeaderAdmin nombre={nombre} puesto={puesto} />
 
-      {/* MÉTRICAS */}
       <div className="top-grid">
         <MetricCard
-          titulo="Ingresos mensuales totales"
-          valor="$12,760.00"
-          icono={ingresos}
+          titulo="Ingresos mensuales"
+          valor={`$${totalDinero.toLocaleString("en-US")}.00`} // Valor Real
+          icono={ingresosIcon}
           color="green"
           to="/reportes-ingresos"
         />
 
         <MetricCard
           titulo="Medicos Activos"
-          valor="43"
-          icono={doctor}
+          valor={numMedicos} 
+          icono={doctorIcon}
           color="blue"
           to="/listado-medicos"
         />
 
         <MetricCard
           titulo="Pacientes Activos"
-          valor="389"
-          icono={user}
+          valor={numPacientes} 
+          icono={userIcon}
           color="purple"
           to="/listado-pacientes"
         />
       </div>
 
-      {/* TABLA + ACCIONES */}
       <div className="main-grid">
         <div className="Titulo-tabla-admin">
-          <h3>Ingresos Semanales</h3>
+          <h3>Ingresos (Últimos 30 días)</h3>
           <h3 className="total">
-            ${total.toLocaleString("en-US")}.00 <span>mxn</span>
+            ${totalDinero.toLocaleString("en-US")}.00 <span>mxn</span>
           </h3>
           <div className="chart-box">
             <ResponsiveContainer width="100%" height={200}>
-              <AreaChart data={data}>
+              <AreaChart data={dataIngresos}>
                 <defs>
                   <linearGradient id="colorIngreso" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="10%" stopColor="#3b82f6" stopOpacity={0.4} />
