@@ -44,3 +44,113 @@
   width: 26px;
   height: 26px;
 }
+
+/* ... Tus estilos existentes de HomeRecep arriba ... */
+
+/* =========================================
+   ESTILOS DE LA TABLA (AppointmentsTable)
+   ========================================= */
+
+.appt-table {
+  width: 100%;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+/* Encabezados */
+.custom-table th {
+  text-align: left;
+  padding: 12px 16px;
+  color: #6b7280; /* Gris suave */
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Celdas */
+.custom-table td {
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  color: #1f2937; /* Gris oscuro (casi negro) para que se lea bien */
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+/* Filas */
+.table-row {
+  transition: background-color 0.2s;
+}
+
+.table-row.clickable:hover {
+  background-color: #f9fafb; /* Gris muy clarito al pasar mouse */
+  cursor: pointer;
+}
+
+/* Fila seleccionada (Azul muy claro) */
+.selected-row {
+  background-color: #eff6ff !important; 
+}
+
+/* =========================================
+   BADGES DE ESTADO (COLORES)
+   ========================================= */
+
+.estado-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 9999px; /* Redondo */
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 80px;
+}
+
+/* 🔵 AGENDADA */
+.estado-badge.agendada {
+  background-color: #dbeafe; /* Azul fondo */
+  color: #1e40af;           /* Azul texto fuerte */
+}
+
+/* 🟢 TERMINADA */
+.estado-badge.terminada {
+  background-color: #dcfce7; /* Verde fondo */
+  color: #166534;           /* Verde texto fuerte */
+}
+
+/* 🟡 EN CURSO */
+.estado-badge.en-curso {
+  background-color: #fef9c3; /* Amarillo fondo */
+  color: #854d0e;           /* Naranja/Café texto */
+}
+
+/* 🔴 CANCELADA */
+.estado-badge.cancelada {
+  background-color: #fee2e2; /* Rojo fondo */
+  color: #991b1b;           /* Rojo texto fuerte */
+}
+
+/* ⚪ DEFAULT */
+.estado-badge.default {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* =========================================
+   UTILIDADES
+   ========================================= */
+.font-bold {
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
+  font-style: italic;
+}
