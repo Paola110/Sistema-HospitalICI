@@ -2,14 +2,16 @@ import { useState } from "react";
 import "./styles/BuscadorPaciente.css";
 import RegistrarPaciente from "./RegistrarPaciente";
 
+// AHORA RECIBE LA LISTA REAL DE PACIENTES
 export default function BuscadorPaciente({
-  pacientes,
+  pacientes = [],
   onSelectPaciente,
-  onNuevoPaciente,
+  onNuevoPaciente, // Opcional: Para abrir modal desde el padre
 }) {
   const [query, setQuery] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
 
+  // Filtrado en tiempo real
   const resultados = pacientes.filter((p) =>
     `${p.nombres} ${p.apellidos}`.toLowerCase().includes(query.toLowerCase())
   );
@@ -24,11 +26,10 @@ export default function BuscadorPaciente({
           onChange={(e) => setQuery(e.target.value)}
         />
 
-        {onNuevoPaciente && (
-          <button className="btn-nuevo" onClick={() => setMostrarModal(true)}>
-            Registrar nuevo paciente
-          </button>
-        )}
+        {/* Botón para abrir modal de registro */}
+        <button className="btn-nuevo" onClick={() => setMostrarModal(true)}>
+          Registrar nuevo paciente
+        </button>
 
         {mostrarModal && (
           <RegistrarPaciente
@@ -36,11 +37,14 @@ export default function BuscadorPaciente({
             onSave={(data) => {
               console.log("Paciente guardado:", data);
               setMostrarModal(false);
+              // Recargar la página para ver al nuevo paciente en la lista
+              window.location.reload(); 
             }}
           />
         )}
       </div>
 
+      {/* Lista de resultados */}
       {query.length > 0 && (
         <div className="buscador-resultados">
           {resultados.length === 0 ? (
@@ -52,7 +56,7 @@ export default function BuscadorPaciente({
                 className="buscador-item"
                 onClick={() => {
                   onSelectPaciente(p);
-                  setQuery("");
+                  setQuery(""); // Limpiar búsqueda al seleccionar
                 }}
               >
                 {p.nombres} {p.apellidos}

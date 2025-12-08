@@ -1,32 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Componentes originales
 import BuscadorPaciente from "../components/BuscadorPaciente";
 import TarjetaPersona from "../components/TarjetaPersona";
 import FormCita from "../components/FormCita";
 
 import backIcon from "../assets/back-arrow.svg";
-
-import { pacientesEjemplo } from "../data/pacientesEjemplo";
 import "./styles/CrearCita.css";
 
 export default function CrearCita() {
   const navigate = useNavigate();
 
+  // Estados para datos reales
+  const [pacientesReales, setPacientesReales] = useState([]);
+  const [medicosReales, setMedicosReales] = useState([]);
   const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
 
-  const handleCrearCita = (datosCita) => {
+  // 1. CARGAR DATOS DEL BACKEND AL INICIAR
+  useEffect(() => {
+    // Cargar Pacientes
+    fetch("http://localhost:3000/pacientes")
+      .then((res) => res.json())
+      .then((data) => setPacientesReales(data))
+      .catch((err) => console.error("Error cargando pacientes:", err));
+
+    // Cargar Médicos (Para pasárselos al FormCita)
+    fetch("http://localhost:3000/medicos")
+      .then((res) => res.json())
+      .then((data) => setMedicosReales(data))
+      .catch((err) => console.error("Error cargando médicos:", err));
+  }, []);
+
+  // 2. FUNCIÓN PARA GUARDAR EN BD (Se pasa al hijo FormCita)
+  const handleCrearCita = async (datosCita) => {
+    // Validación de Paciente
     if (!pacienteSeleccionado) {
-      alert("Selecciona un paciente primero");
+      alert("⚠️ Selecciona un paciente primero en el buscador.");
       return;
     }
 
-    console.log("Cita creada:", {
-      paciente: pacienteSeleccionado,
-      ...datosCita,
-    });
+    // Validación de Datos del Formulario
+    // Nota: datosCita debe venir del hijo con { fecha, hora, id_medico, motivo }
+    if (!datosCita.fecha || !datosCita.hora || !datosCita.id_medico) {
+      alert("⚠️ Faltan datos: Fecha, Hora o Médico.");
+      return;
+    }
 
-    alert("Cita creada con éxito");
+    // Preparar JSON para el Backend
+    const fechaHora = `${datosCita.fecha} ${datosCita.hora}:00`;
+
+    const payload = {
+      fecha_hora: fechaHora,
+      motivo: datosCita.motivo || "Consulta General",
+      id_medico: Number(datosCita.id_medico),
+      id_paciente: Number(pacienteSeleccionado.id),
+      estado: "Agendada"
+    };
+
+    console.log("Enviando cita:", payload);
+
+    try {
+      const res = await fetch("http://localhost:3000/citas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        alert("✅ Cita creada con éxito (ID: " + data.id + ")");
+        navigate("/homerecep");
+      } else {
+        const err = await res.json();
+        alert("❌ Error del servidor: " + (err.error || "No se pudo agendar"));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión con el servidor");
+    }
   };
 
   return (
@@ -40,18 +92,26 @@ export default function CrearCita() {
       </div>
 
       <p className="subtitulo-cc">Agenda una nueva cita para el paciente</p>
-      {/* BUSCADOR */}
+      
+      {/* IMPORTANTE: Asegúrate de editar 'BuscadorPaciente' para que acepte 
+          la prop 'pacientes' en lugar de usar el archivo de ejemplo.
+      */}
       <BuscadorPaciente
-        pacientes={pacientesEjemplo}
+        pacientes={pacientesReales} 
         onSelectPaciente={(p) => setPacienteSeleccionado(p)}
-        onNuevoPaciente={() => alert("Registrar nuevo paciente")}
+        onNuevoPaciente={() => alert("Función registrar paciente rápido pendiente")}
       />
+      
       <div className="contenido">
         {/* TARJETA DEL PACIENTE (izquierda) */}
         <TarjetaPersona paciente={pacienteSeleccionado} type="paciente" />
 
         {/* FORMULARIO (derecha) */}
-        <FormCita onCrear={handleCrearCita} />
+        {/* Pasamos los médicos reales para que FormCita llene su <select> */}
+        <FormCita 
+            onCrear={handleCrearCita} 
+            medicos={medicosReales} 
+        />
       </div>
     </div>
   );
