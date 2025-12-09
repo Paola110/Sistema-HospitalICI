@@ -1,78 +1,17 @@
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-}
+/* 
+  ESTOS ESTILOS HAN SIDO MOVIDOS A Modal.css PARA CENTRALIZAR EL DISEÑO.
+  SOLO MANTENEMOS LO QUE SEA EXCLUSIVO DE ESTE COMPONENTE SI FUESE NECESARIO.
+*/
 
-.modal-container {
-  width: 600px;
-  height: 89%;
-  background: white;
-  border-radius: 12px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  position: relative;
-}
-
-.modal-header {
-  background: #2563eb;
-  padding: 20px;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.modal-header .title {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: bold;
-}
-
-.modal-header .subtitle {
-  opacity: 0.8;
-  font-size: 0.9rem;
-  color: white;
-}
-
-.close-btn {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  border: none;
-  background: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.modal-content {
-  padding: 30px;
-  padding-top: 30px;
-}
-
-body.modal-open {
-  filter: blur(4px);
-  overflow: hidden;
-}
-
+/* Utilities especificas de la tarjeta de paciente */
 .paciente-card {
   display: flex;
   align-items: center;
   gap: 15px;
   background: rgb(249, 250, 251);
-  padding: 15px 15px 0px 0px;
+  padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
-  margin-top: -10px;
-  width: 510px;
 }
 
 .avatar {
@@ -95,72 +34,4 @@ body.modal-open {
 .paciente-nombre {
   font-size: 1rem;
   font-weight: bold;
-}
-
-.form-section label {
-  margin-top: 12px;
-  display: block;
-  color: #374151;
-  font-weight: 500;
-}
-
-.modal-content input {
-  flex: 1 1 0%;
-  padding: 12px 15px;
-  border: 1px solid rgb(220, 220, 220);
-  border-radius: 10px;
-  font-size: 15px;
-  margin-top: 5px;
-  width: 500px;
-}
-
-.modal-content select {
-  width: 532px;
-}
-
-.modal-content select,
-.modal-content textarea {
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  margin-top: 5px;
-  font-size: 0.95rem;
-}
-
-.modal-content textarea {
-  width: 510px;
-  min-height: 70px;
-  resize: vertical;
-}
-
-.divider {
-  height: 1px;
-  background: #e5e7eb;
-  margin: 20px 0;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  padding: 15px 20px;
-  gap: 10px;
-  background: #f9fafb;
-}
-
-.btn-cancelar {
-  padding: 10px 18px;
-  background: #e5e7eb;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn-guardar {
-  padding: 10px 18px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
 }

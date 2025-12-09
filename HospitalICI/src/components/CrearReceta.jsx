@@ -84,89 +84,80 @@ export default function CrearReceta({ paciente, cita, onClose }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-container">
+      <div className="modal-content" style={{ maxWidth: '800px' }}> {/* Un poco más ancho para medicamentos */}
         {/* ENCABEZADO */}
-        <div className="modal-header-blue">
-          <h2 className="title">Crear Receta</h2>
-          <span className="subtitle">Nuevo registro clínico</span>
-          <button className="modal-close" onClick={onClose}>
-            ✕
+        <div className="modal-header">
+          <div>
+            <h2 className="title">Crear Receta</h2>
+            <span style={{ fontSize: '0.9em', color: '#666' }}>Nuevo registro clínico para {paciente.nombres} {paciente.apellidos}</span>
+          </div>
+          <button className="close-button" onClick={onClose}>
+            &times;
           </button>
         </div>
 
-        <div className="modal-content">
-          <div className="receta-card">
-            <div className="avatar">
-              {paciente.nombres?.[0] || "?"}
-              {paciente.apellidos?.[0] || "?"}
-            </div>
-            <div>
-              <div className="paciente-label">Paciente</div>
-              <div className="paciente-nombre">
-                {paciente.nombres || "Nombre"} {paciente.apellidos || ""}
-              </div>
-            </div>
-          </div>
+        <div className="form-registro">
 
-          <div className="modal-body">
-            {/* MEDICAMENTOS */}
-            <label>Medicamentos</label>
+          {/* LISTA DE MEDICAMENTOS */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>Medicamentos</label>
 
             {medicamentos.map((m, i) => (
-              <div className="med-item" key={i}>
+              <div className="med-item" key={i} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '10px', marginBottom: '10px' }}>
                 <input
                   type="text"
-                  placeholder="Nom. Medicamento"
+                  placeholder="Nombre Medicamento"
                   value={m.nombre}
                   onChange={(e) => actualizarCampo(i, "nombre", e.target.value)}
+                  style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                 />
                 <input
                   type="text"
-                  placeholder="Dosis (500mg)"
+                  placeholder="Dosis"
                   value={m.dosis}
                   onChange={(e) => actualizarCampo(i, "dosis", e.target.value)}
+                  style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                 />
                 <input
                   type="text"
-                  placeholder="Frecuencia (8hrs)"
+                  placeholder="Frecuencia"
                   value={m.frecuencia}
-                  onChange={(e) =>
-                    actualizarCampo(i, "frecuencia", e.target.value)
-                  }
+                  onChange={(e) => actualizarCampo(i, "frecuencia", e.target.value)}
+                  style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                 />
                 <input
                   type="text"
-                  placeholder="Duración (3 días)"
+                  placeholder="Duración"
                   value={m.duracion}
-                  onChange={(e) =>
-                    actualizarCampo(i, "duracion", e.target.value)
-                  }
+                  onChange={(e) => actualizarCampo(i, "duracion", e.target.value)}
+                  style={{ padding: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
                 />
               </div>
             ))}
 
-            <button className="btn-add" onClick={agregarMedicamento}>
-              + Agregar medicamento
+            <button
+              type="button"
+              onClick={agregarMedicamento}
+              style={{ background: '#e0f2fe', color: '#0284c7', border: 'none', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9em' }}
+            >
+              + Agregar otro medicamento
             </button>
+          </div>
 
-            {/* INSTRUCCIONES */}
+          {/* INSTRUCCIONES */}
+          <div className="form-group">
             <label>Instrucciones adicionales (opcional)</label>
             <textarea
-              placeholder="Instrucciones extra..."
+              placeholder="Instrucciones extra para el paciente..."
               value={instruccionesExtra}
               onChange={(e) => setInstruccionesExtra(e.target.value)}
+              rows={4}
             ></textarea>
-
-            {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
           </div>
-        </div>
 
-        {/* BOTONES */}
-        <div className="modal-footer">
-          <button className="btn-secondary" onClick={onClose}>
-            Cancelar
-          </button>
-          <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
+          {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+
+          <button className="save-button" onClick={handleSubmit} disabled={loading}>
             {loading ? "Guardando..." : "Guardar Receta"}
           </button>
         </div>
