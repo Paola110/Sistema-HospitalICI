@@ -45,7 +45,7 @@ export default function Login() {
 
       const data = await response.json();
 
-      console.log("DATOS RECIBIDOS DEL LOGIN:", data); 
+      console.log("DATOS RECIBIDOS DEL LOGIN:", data);
       console.log("ROL DETECTADO:", data.user?.rol);
 
       if (!response.ok) {
@@ -65,7 +65,7 @@ export default function Login() {
           navigate("/homemed");
         } else if (userRol === "recepcionista") {
           navigate("/homerecep");
-        } else if (userRol === "admin" || userRol === "administrador") {
+        } else if (userRol === "administrativo" || userRol === "administrador") {
           navigate("/homeadmin");
         } else {
           // Fallback o rol desconocido

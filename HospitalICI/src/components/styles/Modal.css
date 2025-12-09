@@ -5,271 +5,152 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.5); /* Más oscuro para mejor contraste */
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 200;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
 }
 
-.modal-container {
-  width: 600px;
-  height: 89%;
-  background: white;
-  border-radius: 12px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  position: relative;
-}
-
-.modal-header-blue,
-.modal-header-green,
-.modal-header-red {
-  padding: 20px;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.modal-header-blue {
-  background: #2563eb;
-}
-.modal-header-red {
-  background: #d63031;
-}
-.modal-header-green {
-  background: #2aab59;
-}
-
-.modal-header-blue .title,
-.modal-header-green .title,
-.modal-header-red .title {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: bold;
-}
-
-.modal-header-blue .subtitle,
-.modal-header-green .subtitle,
-.modal-header-red .subtitle {
-  opacity: 0.8;
-  font-size: 0.9rem;
-  color: white;
-}
-
-.modal-close {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  border: none;
-  background: none;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
-  padding: 30px;
-  padding-top: 30px;
+  background: white;
+  width: 90%;
+  max-width: 500px; /* Ancho por defecto más contenido */
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden; /* Para que el header no se salga de las esquinas */
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* Evita que sea más alto que la pantalla */
+  animation: slideUp 0.3s ease-out;
 }
 
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    transform: scale(0.93);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
+
+.modal-header {
+  padding: 16px 24px;
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.close-button:hover {
+  color: #111827;
+}
+
+/* ======================= */
+/*    FORM STYLES GENERICO  */
+/* ======================= */
+
+.form-registro {
+  padding: 24px;
+  overflow-y: auto; /* Scroll si es muy largo */
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box; /* Importante para padding interno */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.save-button {
+  width: 100%;
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.save-button:hover {
+  background: #1d4ed8;
+}
+
+.save-button:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+/* ======================= */
+/*  UTILIDADES EXTRA (Legacy) */
+/* ======================= */
 
 .receta-card {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background: rgb(249, 250, 251);
-  padding: 15px 15px 0px 0px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  margin-top: -10px;
-  width: 510px;
-}
-
-.receta-card .avatar {
-  width: 48px;
-  height: 48px;
-  background: #e0e7ff;
-  color: #1e3a8a;
-  font-size: 1.4rem;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.paciente-label {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-.paciente-nombre {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.modal-body label {
-  margin-top: 12px;
-  display: block;
-  color: #374151;
-  font-weight: 500;
-}
-
-.modal-body input {
-  flex: 1 1 0%;
-  padding: 12px 15px;
-  border: 1px solid rgb(220, 220, 220);
-  border-radius: 10px;
-  font-size: 15px;
-  margin-top: 5px;
-  width: 500px;
-}
-
-.modal-body select {
-  width: 532px;
-}
-
-.modal-body select,
-.modal-body textarea {
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  margin-top: 5px;
-  font-size: 0.95rem;
-}
-
-.modal-body textarea {
-  width: 510px;
-  min-height: 70px;
-  resize: vertical;
-}
-
-.modal-body .med-item input {
-  flex: 1 1 0%;
-  padding: 12px 15px;
-  border: 1px solid rgb(220, 220, 220);
-  border-radius: 10px;
-  font-size: 15px;
-  margin-top: 5px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .med-item {
-  background: #f7f9fc;
-  border: 1px solid #e3e7ee;
-  padding: 15px 0px 15px 10px;
-  border-radius: 10px;
-  margin-bottom: 0.9rem;
-
   display: grid;
-  grid-template-columns: 2.4fr 1fr 1.5fr 1.5fr 0.1fr;
-  gap: 2.5rem;
-}
-
-.btn-add {
-  background: #e9f1ff;
-  border: 1px dashed #6a9cff;
-  padding: 0.55rem 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  color: #0a63e8;
-  font-weight: 600;
-}
-
-/* ======================= */
-/*       BOTONES           */
-/* ======================= */
-
-.receta-buttons,
-.qf-buttons {
-  display: flex;
-  justify-content: flex-end;
-  padding: 15px 20px;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
   gap: 10px;
-}
-
-.btn-primary {
-  padding: 10px 18px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.btn-primary:hover {
-  background: #084ec0;
-}
-
-.btn-secondary {
-  padding: 10px 18px;
-  background: #e5e7eb;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background: #d2d2d2;
-}
-
-/* ======================= */
-/* EXTRAS PARA COBRAR CITA */
-/* ======================= */
-
-.servicio-item {
-  background: #f3f4f6;
-  padding: 14px 18px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-}
-
-.servicio-nombre {
-  font-size: 17px;
-  font-weight: 600;
-}
-
-.servicio-cat {
-  font-size: 13px;
-  color: #666;
-}
-
-.servicio-precio {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.input-label {
-  margin-top: 10px;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-.cambio-box {
-  margin-top: 12px;
-  padding: 10px;
-  background: #eefcec;
-  border: 1px solid #c0f5b5;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
 }

@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/HomeAdmin.css";
+import { API_URL } from "../config";
 
 import { useUser } from "../context/UserContext";
 import HeaderAdmin from "../components/Header";
 import MetricCard from "../components/MetricCard";
+import RegistrarPersonal from "../components/RegistrarPersonal";
 
 import ingresosIcon from "../assets/ingresos.svg";
 import doctorIcon from "../assets/doctor.svg";
 import userIcon from "../assets/user.png";
+import addIcon from "../assets/user-add.svg"; // Reusing existing icon if available, or just generic
 
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -23,13 +26,14 @@ export default function HomeAdmin() {
   const [totalDinero, setTotalDinero] = useState(0);
   const [numMedicos, setNumMedicos] = useState(0);
   const [numPacientes, setNumPacientes] = useState(0);
-  
+
   // NUEVO: Estado para los Logs Reales
   const [ultimosLogs, setUltimosLogs] = useState([]);
+  const [showModalPersonal, setShowModalPersonal] = useState(false);
 
   useEffect(() => {
     // 1. Ingresos
-    fetch("http://localhost:3000/pagos/ingresos")
+    fetch(`${API_URL}/pagos/ingresos`)
       .then((res) => res.json())
       .then((data) => {
         setDataIngresos(data);
@@ -38,19 +42,19 @@ export default function HomeAdmin() {
       .catch(console.error);
 
     // 2. Contar Médicos
-    fetch("http://localhost:3000/medicos")
+    fetch(`${API_URL}/medicos`)
       .then((res) => res.json())
       .then((data) => { if (Array.isArray(data)) setNumMedicos(data.length); })
       .catch(console.error);
 
     // 3. Contar Pacientes
-    fetch("http://localhost:3000/pacientes")
+    fetch(`${API_URL}/pacientes`)
       .then((res) => res.json())
       .then((data) => { if (Array.isArray(data)) setNumPacientes(data.length); })
       .catch(console.error);
 
     // 4. CARGAR LOGS DE AUDITORÍA (Los últimos 7)
-    fetch("http://localhost:3000/admin/registros")
+    fetch(`${API_URL}/admin/registros`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -107,6 +111,17 @@ export default function HomeAdmin() {
         />
       </div>
 
+      {/* SECCIÓN DE ACCIONES RÁPIDAS (Botonera) */}
+      <div style={{ padding: '0 20px', display: 'flex', gap: '15px' }}>
+        <button
+          className="btn-crear"
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px' }}
+          onClick={() => setShowModalPersonal(true)}
+        >
+          <span style={{ fontSize: '1.2em' }}>+</span> Registrar Nuevo Personal
+        </button>
+      </div>
+
       <div className="main-grid">
         {/* GRÁFICA */}
         <div className="Titulo-tabla-admin">
@@ -132,10 +147,10 @@ export default function HomeAdmin() {
         </div>
 
         {/* TABLA DE LOGS REALES */}
-        <div 
-            className="registros-box" 
-            onClick={() => navigate("/listado-registros")} 
-            style={{ cursor: "pointer" }}
+        <div
+          className="registros-box"
+          onClick={() => navigate("/listado-registros")}
+          style={{ cursor: "pointer" }}
         >
           <h3>Bitácora de Seguridad (Reciente)</h3>
 
@@ -152,28 +167,28 @@ export default function HomeAdmin() {
                 {ultimosLogs.length > 0 ? (
                   ultimosLogs.map((log) => (
                     <tr key={log.id}>
-                      <td style={{fontWeight: 'bold', fontSize: '0.9em'}}>
+                      <td style={{ fontWeight: 'bold', fontSize: '0.9em' }}>
                         {log.usuario}
                       </td>
                       <td>
                         <span style={{
-                            padding: '4px 8px', borderRadius: '4px', fontSize: '0.8em', fontWeight: 'bold',
-                            color: getColorAccion(log.accion),
-                            backgroundColor: getBgAccion(log.accion)
+                          padding: '4px 8px', borderRadius: '4px', fontSize: '0.8em', fontWeight: 'bold',
+                          color: getColorAccion(log.accion),
+                          backgroundColor: getBgAccion(log.accion)
                         }}>
-                            {log.accion}
+                          {log.accion}
                         </span>
                       </td>
                       <td>
-                        <span style={{fontSize: '0.85em', color: '#666'}}>
-                            {log.fecha} <br/> {log.hora}
+                        <span style={{ fontSize: '0.85em', color: '#666' }}>
+                          {log.fecha} <br /> {log.hora}
                         </span>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" style={{textAlign: "center", padding: "20px", color: "#888"}}>
+                    <td colSpan="3" style={{ textAlign: "center", padding: "20px", color: "#888" }}>
                       Sin movimientos recientes.
                     </td>
                   </tr>
@@ -183,6 +198,19 @@ export default function HomeAdmin() {
           </div>
         </div>
       </div>
+
+      {showModalPersonal && (
+        <RegistrarPersonal
+          onClose={() => setShowModalPersonal(false)}
+          onSave={() => {
+            // Recargar contadores
+            fetch(`${API_URL}/medicos`).then(r => r.json()).then(d => setNumMedicos(d.length || 0));
+            // Opcional: Recargar logs
+            fetch(`${API_URL}/admin/registros`).then(r => r.json()).then(d => setUltimosLogs(d.slice(0, 7)));
+          }}
+        />
+      )}
+
     </div>
   );
 }
