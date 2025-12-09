@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
+import { API_URL } from "../config";
 import "./styles/HomeAdmin.css";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +8,7 @@ import HeaderAdmin from "../components/Header";
 import MetricCard from "../components/MetricCard";
 
 import ingresosIcon from "../assets/ingresos.svg";
-import doctorIcon from "../assets/doctor.svg"; 
+import doctorIcon from "../assets/doctor.svg";
 import userIcon from "../assets/user.png";
 
 import registrosEjemplo from "../data/registrosEjemplo";
@@ -32,7 +33,7 @@ export default function HomeAdmin() {
   const [numPacientes, setNumPacientes] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:3000/pagos/ingresos")
+    fetch(`${API_URL}/pagos/ingresos`)
       .then((res) => res.json())
       .then((data) => {
         setDataIngresos(data);
@@ -71,7 +72,7 @@ export default function HomeAdmin() {
 
         <MetricCard
           titulo="Medicos Activos"
-          valor={numMedicos} 
+          valor={numMedicos}
           icono={doctorIcon}
           color="blue"
           to="/listado-medicos"
@@ -79,7 +80,7 @@ export default function HomeAdmin() {
 
         <MetricCard
           titulo="Pacientes Activos"
-          valor={numPacientes} 
+          valor={numPacientes}
           icono={userIcon}
           color="purple"
           to="/listado-pacientes"

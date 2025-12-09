@@ -9,6 +9,8 @@ import FormCita from "../components/FormCita";
 import backIcon from "../assets/back-arrow.svg";
 import "./styles/CrearCita.css";
 
+import { API_URL } from "../config";
+
 export default function CrearCita() {
   const navigate = useNavigate();
 
@@ -22,13 +24,13 @@ export default function CrearCita() {
   // 1. CARGAR DATOS DEL BACKEND AL INICIAR
   useEffect(() => {
     // Cargar Pacientes
-    fetch("http://localhost:3000/pacientes")
+    fetch(`${API_URL}/pacientes`)
       .then((res) => res.json())
       .then((data) => setPacientesReales(data))
       .catch((err) => console.error("Error cargando pacientes:", err));
 
     // Cargar Médicos
-    fetch("http://localhost:3000/medicos")
+    fetch(`${API_URL}/medicos`)
       .then((res) => res.json())
       .then((data) => setMedicosReales(data))
       .catch((err) => console.error("Error cargando médicos:", err));

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./styles/Modal.css";
+import { API_URL } from "../config";
 
 export default function CobrarConsulta({ cita, onClose }) {
   const [monto, setMonto] = useState("");
@@ -39,8 +40,8 @@ export default function CobrarConsulta({ cita, onClose }) {
     setLoading(true);
 
     const idPaciente = typeof cita.paciente === 'string' && cita.paciente.includes('#')
-        ? parseInt(cita.paciente.split('#')[1])
-        : cita.id_paciente || 1;
+      ? parseInt(cita.paciente.split('#')[1])
+      : cita.id_paciente || 1;
 
     try {
       const resPago = await fetch("http://localhost:3000/pagos", {
@@ -48,7 +49,7 @@ export default function CobrarConsulta({ cita, onClose }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id_paciente: idPaciente,
-          id_recepcionista: 1, 
+          id_recepcionista: 1,
           monto: parseFloat(monto),
           metodo: metodo
         }),
@@ -56,27 +57,27 @@ export default function CobrarConsulta({ cita, onClose }) {
 
       if (!resPago.ok) throw new Error("Error al registrar pago");
 
- 
+
       const payloadUpdate = {
-          id: cita.id,
-          fecha_hora: cita.original ? cita.original.fecha_hora : new Date().toISOString(), // Fallback
-          motivo: cita.tipo, 
-          id_medico: cita.original ? cita.original.id_medico : 1,
-          id_paciente: idPaciente,
-          estado: "Terminada" 
+        id: cita.id,
+        fecha_hora: cita.original ? cita.original.fecha_hora : new Date().toISOString(), // Fallback
+        motivo: cita.tipo,
+        id_medico: cita.original ? cita.original.id_medico : 1,
+        id_paciente: idPaciente,
+        estado: "Terminada"
       };
 
       await fetch(`http://localhost:3000/citas`, {
         method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadUpdate)
       });
 
       imprimirTicket({ monto, metodo });
-      
+
       alert(" Pago registrado correctamente");
       onClose();
-      window.location.reload(); 
+      window.location.reload();
 
     } catch (error) {
       console.error(error);

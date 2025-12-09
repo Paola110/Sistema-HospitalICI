@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // BORRAMOS: import pacientes from "../../data/pacientesEjemplo"; 
+import { API_URL } from "../../config";
 import "./Listados.css";
 
 import backIcon from "../../assets/back-arrow.svg";
@@ -9,7 +10,7 @@ export default function ListadoPacientes() {
   const navigate = useNavigate();
 
   const [pacientesOriginal, setPacientesOriginal] = useState([]);
-  
+
   const [resultado, setResultado] = useState([]);
 
   const [filtro, setFiltro] = useState({
@@ -22,14 +23,14 @@ export default function ListadoPacientes() {
     fetch("http://localhost:3000/pacientes")
       .then((response) => response.json())
       .then((data) => {
-        console.log("Datos recibidos del backend:", data); 
-        setPacientesOriginal(data); 
-        setResultado(data);         
+        console.log("Datos recibidos del backend:", data);
+        setPacientesOriginal(data);
+        setResultado(data);
       })
       .catch((error) => {
         console.error("Error conectando al servidor:", error);
       });
-  }, []); 
+  }, []);
 
 
   useEffect(() => {
@@ -136,7 +137,7 @@ export default function ListadoPacientes() {
                     {p.nombres} {p.apellidos}
                   </td>
                   <td>{p.id}</td>
-                  <td>{p.direccion || "Sin dirección"}</td> 
+                  <td>{p.direccion || "Sin dirección"}</td>
                   <td>{p.telefono}</td>
                 </tr>
               ))

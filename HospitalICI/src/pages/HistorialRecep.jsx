@@ -4,6 +4,7 @@ import HeaderRecep from "../components/Header";
 import { useUser } from "../context/UserContext";
 import BackIcon from "../assets/back-arrow.svg";
 import "./styles/HomeRecep.css";
+import { API_URL } from "../config";
 
 export default function HistorialRecep() {
     const { nombre, puesto } = useUser();
@@ -16,7 +17,7 @@ export default function HistorialRecep() {
     const [fechaFiltro, setFechaFiltro] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:3000/citas")
+        fetch(`${API_URL}/citas`)
             .then((res) => res.json())
             .then((data) => {
                 // Ordenar por fecha descendente

@@ -5,6 +5,7 @@ import CitasDeHoy from "../components/CitasDeHoy";
 import { useUser } from "../context/UserContext";
 import BackIcon from "../assets/back-arrow.svg";
 import "./styles/Check-in.css";
+import { API_URL } from "../config";
 
 export default function CheckinPage() {
   const { nombre, puesto } = useUser();
@@ -15,7 +16,7 @@ export default function CheckinPage() {
 
   // 1. Cargar Citas y filtrar
   useEffect(() => {
-    fetch("http://localhost:3000/citas")
+    fetch(`${API_URL}/citas`)
       .then(res => res.json())
       .then(data => {
         const hoyString = new Date().toDateString();

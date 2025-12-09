@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Listados.css";
 
 import backIcon from "../../assets/back-arrow.svg";
+import { API_URL } from "../../config";
 
 export default function ListadoMedicos() {
   const navigate = useNavigate();

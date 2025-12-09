@@ -5,6 +5,8 @@ import { useUser } from "../context/UserContext";
 import TarjetaPersona from "../components/TarjetaPersona";
 import QuickAction from "../components/QuickAction";
 
+import { API_URL } from "../config";
+
 import CrearReceta from "../components/CrearReceta";
 import ReservarQuirofano from "../components/ReservarQuirofano";
 

@@ -7,6 +7,7 @@ import HistorialCitasPaciente from "../components/HistorialCitasPaciente";
 
 import BackIcon from "../assets/back-arrow.svg";
 import "./styles/DetalleExpediente.css";
+import { API_URL } from "../config";
 
 export default function DetalleExpediente() {
   const { pacienteId } = useParams();
@@ -23,9 +24,9 @@ export default function DetalleExpediente() {
       try {
         if (!pacienteId) return;
 
-        const resPaciente = await fetch(`http://localhost:3000/pacientes/${pacienteId}`);
+        const resPaciente = await fetch(`${API_URL}/pacientes/${pacienteId}`);
         if (!resPaciente.ok) throw new Error("Paciente no encontrado");
-        
+
         const dataPaciente = await resPaciente.json();
 
         const enriched = {
@@ -37,8 +38,8 @@ export default function DetalleExpediente() {
           enfermedadesCronicas: "No refiere",
           cirugiasPrevias: "No refiere",
           antecedentesFamiliares: [],
-          contactoEmergencia: dataPaciente.contactoEmergencia ? 
-            { nombre: dataPaciente.contactoEmergencia, telefono: "", relacion: "" } : 
+          contactoEmergencia: dataPaciente.contactoEmergencia ?
+            { nombre: dataPaciente.contactoEmergencia, telefono: "", relacion: "" } :
             { nombre: "No registrado", telefono: "N/A", relacion: "" },
         };
 
@@ -69,7 +70,7 @@ export default function DetalleExpediente() {
   };
 
   const onStartEdit = () => setEditing(true);
-  
+
   const onCancelEdit = () => {
     setEditing(false);
     window.location.reload();
@@ -85,7 +86,7 @@ export default function DetalleExpediente() {
       const datosParaEnviar = {
         nombres: updated.nombres,
         apellidos: updated.apellidos,
-        fechaNacimiento: updated.fechaNacimiento, 
+        fechaNacimiento: updated.fechaNacimiento,
         sexo: updated.sexo,
         telefono: updated.telefono,
         email: updated.email,

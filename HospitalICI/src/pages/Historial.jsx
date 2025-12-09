@@ -4,6 +4,7 @@ import HeaderRecep from "../components/Header"; // Puede reutilizarse o importar
 import { useUser } from "../context/UserContext";
 import BackIcon from "../assets/back-arrow.svg";
 import "./styles/HomeRecep.css";
+import { API_URL } from "../config";
 
 export default function Historial() {
     const { nombre, puesto, userId } = useUser();
@@ -15,7 +16,7 @@ export default function Historial() {
     useEffect(() => {
         if (!userId) return;
 
-        fetch(`http://localhost:3000/citas/${userId}`)
+        fetch(`${API_URL}/citas/${userId}`)
             .then((res) => res.json())
             .then((data) => {
                 // 1. Filtrar solo las terminadas (Case insensitive por seguridad)

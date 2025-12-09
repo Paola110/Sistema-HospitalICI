@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import "./styles/Modal.css";
+import { API_URL } from "../config";
 
 export default function ReservarQuirofano({ medico, paciente, onClose }) {
   const { userId } = useUser();
@@ -18,7 +20,7 @@ export default function ReservarQuirofano({ medico, paciente, onClose }) {
 
   // Cargar reservas existentes para ver disponibilidad
   useEffect(() => {
-    fetch("http://localhost:3000/quirofano")
+    fetch(`${API_URL}/quirofano`)
       .then((res) => res.json())
       .then((data) => setReservas(data))
       .catch((err) => console.error("Error cargando reservas:", err));

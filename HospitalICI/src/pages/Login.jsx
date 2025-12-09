@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "./styles/Login.css";
+import { API_URL } from "../config";
 
 import logo from "../assets/logo.png";
 import emailIcon from "../assets/email.png";
@@ -29,7 +31,8 @@ export default function Login() {
 
     try {
       // Petición a la API
-      const response = await fetch("http://localhost:3000/medicos/login", {
+      // Petición a la API
+      const response = await fetch(`${API_URL}/medicos/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

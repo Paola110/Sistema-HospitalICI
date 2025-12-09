@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./styles/RegistrarPaciente.css";
+import { API_URL } from "../config";
 
 export default function RegistrarPaciente({ onClose, onSave }) {
   const [form, setForm] = useState({
@@ -35,7 +36,7 @@ export default function RegistrarPaciente({ onClose, onSave }) {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:3000/pacientes/", {
+      const response = await fetch(`${API_URL}/pacientes/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

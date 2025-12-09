@@ -5,6 +5,7 @@ import TarjetaDoctorCompleta from "../components/TarjetaDoctorCompleta.jsx";
 import TarjetaFormacion from "../components/TarjetaFormacion.jsx";
 import TarjetaEstadisticas from "../components/TarjetaEstadisticas.jsx";
 import HistorialCitasDoctor from "../components/HistorialCitasDoctor.jsx";
+import { API_URL } from "../config";
 
 import BackIcon from "../assets/back-arrow.svg";
 import "./styles/DetalleMedico.css";
@@ -24,12 +25,12 @@ export default function DetalleMedico() {
       try {
         if (!doctorId) return;
 
-        const resDoctor = await fetch(`http://localhost:3000/medicos/${doctorId}`);
-        
+        const resDoctor = await fetch(`${API_URL}/medicos/${doctorId}`);
+
         if (!resDoctor.ok) {
           throw new Error("Médico no encontrado");
         }
-        
+
         const dataDoctor = await resDoctor.json();
 
         const doctorSeguro = {
@@ -72,7 +73,7 @@ export default function DetalleMedico() {
 
   const onCancelEdit = () => {
     setEditing(false);
-    window.location.reload(); 
+    window.location.reload();
   };
 
   const onSave = async (updatedDoctor) => {
@@ -185,7 +186,7 @@ export default function DetalleMedico() {
 
             <HistorialCitasDoctor
               doctorNombre={doctorNombreCompleto}
-              citas={citasDoctor} 
+              citas={citasDoctor}
             />
           </div>
         </div>

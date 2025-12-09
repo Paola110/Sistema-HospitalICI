@@ -1,4 +1,6 @@
+
 import "./styles/HomeMed.css";
+import { API_URL } from "../config";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +36,7 @@ export default function HomeMed() {
         setError(null);
 
         // Fetch a la API: /citas/:id (donde id es el id del medico)
-        const response = await fetch(`http://localhost:3000/citas/${userId}`);
+        const response = await fetch(`${API_URL}/citas/${userId}`);
 
         if (!response.ok) {
           // Manejo especial si devuelve 404 (sin citas) o error real

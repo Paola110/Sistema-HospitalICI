@@ -15,6 +15,8 @@ import checkinIcon from "../assets/checkin.svg";
 import payIcon from "../assets/pay.png";
 import historyIcon from "../assets/clock.svg";
 
+import { API_URL } from "../config";
+
 export default function HomeRecep() {
   const { nombre, puesto } = useUser();
 
@@ -26,7 +28,7 @@ export default function HomeRecep() {
   const [abrirModalPago, setAbrirModalPago] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3000/citas")
+    fetch(`${API_URL}/citas`)
       .then((res) => res.json())
       .then((data) => {
         const hoyString = new Date().toDateString();

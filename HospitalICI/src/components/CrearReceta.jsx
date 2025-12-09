@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useUser } from "../context/UserContext";
+import { API_URL } from "../config";
 import "./styles/Modal.css";
 import "./styles/RegistrarPaciente.css";
 
