@@ -63,7 +63,7 @@ export default function HomeRecep() {
       })
       .catch((err) => console.error("Error cargando citas:", err));
 
-    fetch("http://localhost:3000/pagos/ingresos")
+    fetch(`${API_URL}/pagos/ingresos`)
       .then((res) => res.json())
       .then((data) => {
         const hoy = new Date();
@@ -92,7 +92,7 @@ export default function HomeRecep() {
     }
 
     // VALIDACIÓN: Solo cobrar si está Terminada
-    if (citaSeleccionada.estado !== 'Terminada') {
+    if (citaSeleccionada.estado && citaSeleccionada.estado.toLowerCase() !== 'terminada') {
       alert("Solo se pueden cobrar citas que han sido terminadas (atendidas por el médico).");
       return;
     }

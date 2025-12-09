@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 // BORRAMOS: import registros from "../../data/registrosEjemplo";
 import "./Listados.css";
 
@@ -140,18 +141,18 @@ export default function ListadoRegistros() {
 
           <tbody>
             {loading ? (
-              <tr><td colSpan="5" style={{textAlign:"center"}}>Cargando bitácora...</td></tr>
+              <tr><td colSpan="5" style={{ textAlign: "center" }}>Cargando bitácora...</td></tr>
             ) : resultado.length > 0 ? (
               resultado.map((r) => (
-                <tr key={r.id} onClick={() => handleRowClick(r)} style={{cursor: 'default'}}>
+                <tr key={r.id} onClick={() => handleRowClick(r)} style={{ cursor: 'default' }}>
                   <td><strong>{r.usuario}</strong></td>
                   <td>
                     <span style={{
-                        padding: '4px 8px', borderRadius: '4px', fontSize: '0.85em', fontWeight: 'bold',
-                        backgroundColor: r.accion === 'CREAR' ? '#dcfce7' : r.accion === 'ELIMINAR' ? '#fee2e2' : '#e0f2fe',
-                        color: r.accion === 'CREAR' ? '#166534' : r.accion === 'ELIMINAR' ? '#991b1b' : '#075985'
+                      padding: '4px 8px', borderRadius: '4px', fontSize: '0.85em', fontWeight: 'bold',
+                      backgroundColor: r.accion === 'CREAR' ? '#dcfce7' : r.accion === 'ELIMINAR' ? '#fee2e2' : '#e0f2fe',
+                      color: r.accion === 'CREAR' ? '#166534' : r.accion === 'ELIMINAR' ? '#991b1b' : '#075985'
                     }}>
-                        {r.accion}
+                      {r.accion}
                     </span>
                   </td>
                   <td>{r.descripcion}</td>

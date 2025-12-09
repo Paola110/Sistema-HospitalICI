@@ -87,7 +87,7 @@ export default function DetalleMedico() {
         horarioLaboral: updatedDoctor.horarioLaboral
       };
 
-      const response = await fetch(`http://localhost:3000/medicos/${updatedDoctor.id}`, {
+      const response = await fetch(`${API_URL}/medicos/${updatedDoctor.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

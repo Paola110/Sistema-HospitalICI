@@ -73,7 +73,7 @@ export default function Consulta() {
       // 2. Fetch detalles del paciente
       if (citaData.id_paciente) {
         try {
-          const resp = await fetch(`http://localhost:3000/pacientes/${citaData.id_paciente}`);
+          const resp = await fetch(`${API_URL}/pacientes/${citaData.id_paciente}`);
           if (resp.ok) {
             const dataPac = await resp.json();
             setPacienteSeleccionado(dataPac);
@@ -102,17 +102,17 @@ export default function Consulta() {
     setProcesando(true);
 
     try {
-      // 1. Actualizar estado de la Cita -> 'Terminada'
+      // 1. Actualizar estado de la Cita -> 'terminada'
       const citaPayload = {
         id: cita.id,
         fecha_hora: cita.fecha_hora_raw,
         motivo: cita.tipo,
-        estado: "Terminada",
+        estado: "terminada",
         id_medico: userId,
         id_paciente: cita.id_paciente
       };
 
-      const updateRes = await fetch("http://localhost:3000/citas", {
+      const updateRes = await fetch(`${API_URL}/citas`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(citaPayload)
@@ -133,7 +133,7 @@ export default function Consulta() {
         tratamiento: nota.tratamiento
       };
 
-      const notaRes = await fetch("http://localhost:3000/notas", {
+      const notaRes = await fetch(`${API_URL}/notas`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(notaPayload)

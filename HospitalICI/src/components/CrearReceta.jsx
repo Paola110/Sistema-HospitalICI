@@ -61,7 +61,7 @@ export default function CrearReceta({ paciente, cita, onClose }) {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/recetas", {
+      const response = await fetch(`${API_URL}/recetas`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

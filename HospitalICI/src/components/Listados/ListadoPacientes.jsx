@@ -20,7 +20,7 @@ export default function ListadoPacientes() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:3000/pacientes")
+    fetch(`${API_URL}/pacientes`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos recibidos del backend:", data);

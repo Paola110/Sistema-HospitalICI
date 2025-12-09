@@ -3,7 +3,9 @@ import { useState } from "react";
 export default function SelectorMedico({ medicos = [], onSelect, selectedId }) {
     const [filtro, setFiltro] = useState("");
 
-    const filtrados = medicos.filter((m) => {
+    const safeMedicos = Array.isArray(medicos) ? medicos : [];
+
+    const filtrados = safeMedicos.filter((m) => {
         const term = filtro.toLowerCase();
         const nombre = (m.nombreCorto || `${m.nombres} ${m.apellidos}`).toLowerCase();
         const esp = (m.especialidad || "").toLowerCase();

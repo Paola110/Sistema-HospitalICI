@@ -26,13 +26,19 @@ export default function CrearCita() {
     // Cargar Pacientes
     fetch(`${API_URL}/pacientes`)
       .then((res) => res.json())
-      .then((data) => setPacientesReales(data))
+      .then((data) => {
+        if (Array.isArray(data)) setPacientesReales(data);
+        else console.error("Respuesta pacientes no válida:", data);
+      })
       .catch((err) => console.error("Error cargando pacientes:", err));
 
     // Cargar Médicos
     fetch(`${API_URL}/medicos`)
       .then((res) => res.json())
-      .then((data) => setMedicosReales(data))
+      .then((data) => {
+        if (Array.isArray(data)) setMedicosReales(data);
+        else console.error("Respuesta médicos no válida:", data);
+      })
       .catch((err) => console.error("Error cargando médicos:", err));
   }, []);
 
@@ -64,13 +70,13 @@ export default function CrearCita() {
       motivo: datosCita.motivo || "Consulta General",
       id_medico: Number(medicoSeleccionado.id),
       id_paciente: Number(pacienteSeleccionado.id),
-      estado: "Agendada"
+      estado: "agendada"
     };
 
     console.log("Enviando cita:", payload);
 
     try {
-      const res = await fetch("http://localhost:3000/citas", {
+      const res = await fetch(`${API_URL}/citas`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

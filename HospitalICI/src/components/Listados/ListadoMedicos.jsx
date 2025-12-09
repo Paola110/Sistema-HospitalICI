@@ -18,7 +18,7 @@ export default function ListadoMedicos() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:3000/medicos")
+    fetch(`${API_URL}/medicos`)
       .then((res) => res.json())
       .then((data) => {
         setMedicosOriginal(data);

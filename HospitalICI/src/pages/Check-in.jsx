@@ -73,14 +73,14 @@ export default function CheckinPage() {
     try {
       const payload = {
         id: citaVisual.id,
-        estado: 'En curso',
+        estado: 'en curso',
         fecha_hora: citaVisual.original.fecha_hora,
         motivo: citaVisual.original.motivo_consulta,
         id_medico: citaVisual.original.id_medico,
         id_paciente: citaVisual.original.id_paciente
       };
 
-      const res = await fetch(`http://localhost:3000/citas`, {
+      const res = await fetch(`${API_URL}/citas`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

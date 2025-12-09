@@ -44,7 +44,7 @@ export default function CobrarConsulta({ cita, onClose }) {
       : cita.id_paciente || 1;
 
     try {
-      const resPago = await fetch("http://localhost:3000/pagos", {
+      const resPago = await fetch(`${API_URL}/pagos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,10 +64,10 @@ export default function CobrarConsulta({ cita, onClose }) {
         motivo: cita.tipo,
         id_medico: cita.original ? cita.original.id_medico : 1,
         id_paciente: idPaciente,
-        estado: "Terminada"
+        estado: "terminada"
       };
 
-      await fetch(`http://localhost:3000/citas`, {
+      await fetch(`${API_URL}/citas`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payloadUpdate)

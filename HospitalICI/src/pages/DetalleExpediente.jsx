@@ -95,7 +95,7 @@ export default function DetalleExpediente() {
         telefonoEmergencia: updated.contactoEmergencia?.telefono
       };
 
-      const response = await fetch(`http://localhost:3000/pacientes/${updated.id}`, {
+      const response = await fetch(`${API_URL}/pacientes/${updated.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosParaEnviar)
