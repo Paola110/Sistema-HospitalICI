@@ -45,6 +45,9 @@ export default function Login() {
 
       const data = await response.json();
 
+      console.log("DATOS RECIBIDOS DEL LOGIN:", data); 
+      console.log("ROL DETECTADO:", data.user?.rol);
+
       if (!response.ok) {
         // Manejar errores de la API (ej. credenciales inválidas)
         throw new Error(data.message || "Error al iniciar sesión");
